@@ -19,7 +19,7 @@ export default function App() {
     if(Link.to = '/authorization'){
         headerPage = 'Войти в систему'
     }
-    if(Link.to = '/Tricks'){
+    if(Link.to = '/tricks'){
         headerPage = 'Приемы'
     }
 
@@ -41,7 +41,7 @@ export default function App() {
                 <nav>
                     <ul>
                         <li>
-                            <Link to="/tricks">Tricks</Link>
+                            <Link to="/allTricks">Tricks</Link>
                         </li>
                         <li>
                             <Link to="/authorization">Authorization</Link>
