@@ -63,6 +63,7 @@ function Tricks() {
     }
 
     const deleteTrick = async (index) => {
+        console.log('444 ', index);
         await axios.delete('http://localhost4000/deleteTrick?id=' + tricks[index].id, {
         }).then(res => {
             setTricks(res.data.data);
@@ -73,9 +74,6 @@ function Tricks() {
         trick.textPatientUpdate = event.target.value;
         return trick;
     }
-
-
-
 
     console.log('LOOG', tricks);
 
@@ -97,6 +95,7 @@ function Tricks() {
                   <select name="doctor-list"
                           value={nameDoctor}
                           onChange={(e) => setNameDoctor(e.target.value)}>
+                      <option>-</option>
                       <option value="Иванов Алексей Николаевич">Иванов Алексей Николаевич</option>
                       <option value="Остапова Валентина Александровна">Остапова Валентина Александровна</option>
                   </select>
@@ -123,68 +122,29 @@ function Tricks() {
               </div>
           </div>
 
-{/******/}
-
-
-          {/*<button onClick={() => setModalUpdate(true)}>Open modal window</button>*/}
-{/*******/}
           <div className="tricks-list">
                   {
                       tricks.map((trick, index) =>
-                          <div key={`trick-${index}`}>
+                          <div className="tricks-list-wrap" key={`trick-${index}`}>
 
                               <div className="text-trick-patient">{trick.namePatient}</div>
-                              {/*<input type='text'*/}
-                              {/*       className="text-trick-patient"*/}
-                              {/*       placeholder={tricks.namePatient}*/}
-                              {/*       */}
-                              {/*       /!*onChange={change(trick)}*!/*/}
-                              {/*       /!*value={trick.textPatientUpdate}*!/*/}
-                              {/*/>*/}
-
                               <div className="text-trick-doctor">{trick.nameDoctor}</div>
-                              {/*<input type='text'*/}
-                              {/*       className="text-trick-doctor"*/}
-                              {/*       placeholder={tricks.nameDoctor}*/}
-
-                              {/*       onChange={change(trick)}*/}
-                              {/*       value={trick.textDoctorUpdate}*/}
-                              {/*       disabled={true}*/}
-                              {/*/>*/}
-
                               <div className="text-trick-date">{trick.date}</div>
-                              {/*<input type='date'*/}
-                              {/*       className="text-trick-date"*/}
-                              {/*       placeholder={tricks.date}*/}
-
-                              {/*       onChange={change(trick)}*/}
-                              {/*       value={trick.textDateUpdate}*/}
-                              {/*       disabled={true}*/}
-                              {/*/>*/}
-
                               <div className="text-trick-complaints">{trick.textComplaints}</div>
-                              {/*<input type='text'*/}
-                              {/*       className="text-trick-complaints"*/}
-                              {/*       placeholder={tricks.textComplaints}*/}
 
-                              {/*       onChange={change(trick)}*/}
-                              {/*       value={trick.textComplaintsUpdate}*/}
-                              {/*/>*/}
+                              <div className="text-trick-btn">
+                                  <img className="text-trick-btn-delete" src={close}
+                                       onClick={() => deleteTrick(index)}/>
+                                  <img className="text-trick-btn-update" src={edit}
+                                       onClick={() => setModalUpdate(true)}/>
+                              </div>
 
-                              <img src={edit}
-                                   onClick={() => setModalUpdate(true)}/>
-                                   {/*// onClick={() => updateTrick(trick.textPatientUpdate, index)}/>*/}
-                              <img src={close}
-                                   onClick={() => deleteTrick(index)}/>
+
                           </div>
                       )
                   }
           </div>
-
       </main>
-
-    {/*<ModalUpdate active={modalActive} setActive={setModalActive} />*/}
-
 </div>
 
 

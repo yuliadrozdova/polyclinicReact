@@ -33,9 +33,44 @@ main{
 .recording-wrapper{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
 
 }
 
-.tricks-list input::placeholder{
-    color: black;
+.tricks-list div{
+    display: flex;
+    justify-content: center;
+}
+.tricks-list div:last-child{
+    display: flex;
+    justify-content: space-evenly;
+}
+/*.tricks-list-wrap{*/
+/*    display: grid;*/
+/*    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;*/
+/*    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;*/
+/*}*/
+
+.text-trick-patient{
+    width: 30%;
+}
+.text-trick-doctor{
+    width: 25%;
+}
+.text-trick-date{
+    width: 15%;
+}
+.text-trick-complaints{
+    width: 20%;
+}
+.text-trick-btn{
+    width: 10%;
+}
+.text-trick-btn-delete{
+    width: 14px;
+    height: 18px;
+}
+.text-trick-btn-update{
+    width: 18px;
+    height: 18px;
 }
