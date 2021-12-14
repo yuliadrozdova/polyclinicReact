@@ -41,7 +41,7 @@ export default function App() {
                 <nav>
                     <ul>
                         <li>
-                            <Link to="/allTricks">Tricks</Link>
+                            <Link to="/tricks">Tricks</Link>
                         </li>
                         <li>
                             <Link to="/authorization">Authorization</Link>
