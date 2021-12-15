@@ -3,7 +3,8 @@ import axios from "axios";
 import edit from './images/edit.svg';
 import close from './images/delete.svg';
 import './styles/tricks.css';
-import ModalUpdate from "./ModalUpdate";
+import './styles/modalUpdate.css';
+import Modal from 'react-modal';
 
 function Tricks() {
     const [tricks, setTricks] = useState([]);
@@ -12,8 +13,8 @@ function Tricks() {
     const [date, setDate] = useState('');
     const [textComplaints, setTextComplaints] = useState('');
 
-    // const [modalActive, setModalActive] = useState(false);
-    const [modalUpdate, setModalUpdate] = useState(true);
+    const [modalUpdate, setModalUpdate] = useState(false);
+
 
     // const [textPatientUpdate, setTextPatientUpdate] = useState(namePatient);
     // const [textDoctorUpdate, setTextDoctorUpdate] = useState(nameDoctor);
@@ -98,7 +99,6 @@ function Tricks() {
   return (
 <div className="reg-page">
       <main>
-
           <div className="recording-wrapper">
               <div className="patient-name">
                   <p>Имя:</p>
@@ -159,6 +159,70 @@ function Tricks() {
                   }
           </div>
       </main>
+
+    <Modal className="modal-update" isOpen={modalUpdate} contentLabel="Example Modal">
+        <div className="modal-header">Изменить прием</div>
+
+        <div className="modal-wrapper">
+            <div className="patient-name">
+                <p>Имя:</p>
+                <input type="text"
+                       value={namePatient}
+                       onChange={(e) => setNamePatient(e.target.value)}
+                       required/>
+            </div>
+
+            <div className="doctor-name">
+                <p>Врач:</p>
+                <select name="doctor-list"
+                        value={nameDoctor}
+                        onChange={(e) => setNameDoctor(e.target.value)}>
+                    <option>-</option>
+                    <option value="Иванов Алексей Николаевич">Иванов Алексей Николаевич</option>
+                    <option value="Остапова Валентина Александровна">Остапова Валентина Александровна</option>
+                </select>
+            </div>
+
+            <div className="date">
+                <p>Дата:</p>
+                <input type="date"
+                       value={date}
+                       onChange={(e) => setDate(e.target.value)}
+                       required/>
+            </div>
+
+            <div className="complaints">
+                <p>Жалобы:</p>
+                <input type="text"
+                       value={textComplaints}
+                       onChange={(e) => setTextComplaints(e.target.value)}
+                       required/>
+            </div>
+        </div>
+
+        <div className="modal-btn-footer">
+            <button isOpen={false} onClick={() => setModalUpdate(false)}>Cancel</button>
+            <button className='modal-btn-save' onClick={() => updateTrick()}>Save</button>
+        </div>
+
+    </Modal>
+
+
+
+
+    {/*<Modal*/}
+    {/*    isOpen={modalIsOpen}*/}
+    {/*    aria={{*/}
+    {/*        labelledby: "heading",*/}
+    {/*        describedby: "full_description"*/}
+    {/*    }}>*/}
+    {/*    <h1 id="heading">Alert</h1>*/}
+    {/*    <div id="full_description">*/}
+    {/*        <p>Description goes here.</p>*/}
+    {/*    </div>*/}
+    {/*</Modal>*/}
+
+    {/*<Modalll />*/}
 </div>
   );
 }

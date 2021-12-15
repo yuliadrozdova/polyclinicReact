@@ -1,34 +1,24 @@
-input, button, select {
-    width: 150px;
-    margin-right: 10px;
-}
-
 
 body{
     margin: 0 auto;
     background-color: #C5E9FF;
     font-family: Roboto;
 }
-
 .logo{
     width: 88px;
     height: 70px;
     margin: 22px 75px 24px 20px;
 }
-
-/*main{*/
-/*    max-width: 1000px;*/
-/*    margin: 0 200px;*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    padding-top: 40px;*/
-/*}*/
 main{
     max-width: 1000px;
     margin: 0 200px;
     display: flex;
     flex-direction: column;
     padding-top: 40px;
+}
+input, button, select {
+    width: 150px;
+    margin-right: 10px;
 }
 .recording-wrapper{
     display: flex;
@@ -45,12 +35,6 @@ main{
     display: flex;
     justify-content: space-evenly;
 }
-/*.tricks-list-wrap{*/
-/*    display: grid;*/
-/*    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;*/
-/*    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;*/
-/*}*/
-
 .text-trick-patient{
     width: 30%;
 }
@@ -74,3 +58,14 @@ main{
     width: 18px;
     height: 18px;
 }
+
+
+
+
+
+
+
+
+
+
+

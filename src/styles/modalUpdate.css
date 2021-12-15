@@ -1,23 +1,26 @@
-.modal{
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.4);
-    position: fixed;
-    top: 0;
-    left: 0;
-
-    /*max-width: 500px;*/
-    /*margin: 0 auto;*/
-    /*display: flex;*/
-
-
-    /*justify-content: center;*/
-    /*padding-top: 200px;*/
-    /*transform: scale(0);*/
+/*MODAL UPDATE*/
+.modal-update{
+    width: 640px;
+    margin: 20px auto;
+    background-color: white;
+    height: 80%;
+}
+.modal-header{
+    padding: 24px 40px;
+}
+.modal-wrapper{
+    padding: 24px 30px 60px 40px;
 }
 
-.modal-content{}
-
-.modal.active{
-    transform: scale(1);
+.modal-wrapper input, .modal-wrapper select{
+    width: 100%;
+    height: 40px;
+}
+.modal-btn-footer{
+    padding: 24px;
+    text-align: right;
+}
+.modal-btn-save{
+    background-color: rgba(197, 233, 255, 0.72);
+    border: 2px solid rgba(197, 233, 255, 0.72);
 }
