@@ -20,7 +20,7 @@ function Tricks() {
     // const [textDateUpdate, setTexDateUpdate] = useState(date);
     // const [textComplaintsUpdate, setTextComplaintsUpdate] = useState(textComplaints);
 
-   useEffect( async() =>{
+    useEffect( async() =>{
         await axios.get('http://localhost:4000/allTricks').then(res => {
             console.log('000', res.data.data);
 
@@ -78,28 +78,12 @@ function Tricks() {
         });
     }
 
-    // const deleteTrick = (index) => {
-    //     console.log('4441 ', index);
-    //     console.log('4442 ', tricks[index]);
-    //     console.log('4443 ', tricks[index]._id);
-    //      axios.delete('http://localhost:4000/deleteTrick', {
-    //          tricks[index]._id
-    //     }).then(res => {
-    //         // setTricks(res.data.data);
-    //         console.log('llllll ',tricks[index]._id)
-    //     });
-    //
-    //    // await tricks.splice(index, 1);
-    // }
-
 
     const deleteTrick = async (index) => {
-        console.log('4441 ', index);
-        console.log('4442 ', tricks[index]);
-        console.log('4443 ', tricks[index]._id);
-        await axios.delete('http://localhost:4000/deleteTask?id=:tricks[index].id', {
-        }).then(res => {
-            setTricks(res.data.data);
+        await axios.delete(`http://localhost:4000/deleteTrick/${tricks[index]._id}`).then(res => {
+            const copy = tricks.map(value => value); //изменение копии стейта
+            copy.splice(index, 1);
+            setTricks(copy);
         });
     }
 
