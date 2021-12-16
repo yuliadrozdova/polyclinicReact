@@ -3,7 +3,8 @@ import axios from "axios";
 import edit from './images/edit.svg';
 import close from './images/delete.svg';
 import './styles/tricks.css';
-import ModalUpdate from "./ModalUpdate";
+import './styles/modalUpdate.css';
+import Modal from 'react-modal';
 
 function Tricks() {
     const [tricks, setTricks] = useState([]);
@@ -12,17 +13,22 @@ function Tricks() {
     const [date, setDate] = useState('');
     const [textComplaints, setTextComplaints] = useState('');
 
-    // const [modalActive, setModalActive] = useState(false);
-    const [modalUpdate, setModalUpdate] = useState(true);
+    const [updateNamePatient, setUpdateNamePatient] = useState(namePatient);
+    const [updateNameDoctor, setUpdateNameDoctor] = useState(nameDoctor);
+    const [updateDate, setUpdateDate] = useState(date);
+    const [updateTextComplaints, setUpdateTextComplaints] = useState(textComplaints);
 
-    // const [textPatientUpdate, setTextPatientUpdate] = useState(namePatient);
-    // const [textDoctorUpdate, setTextDoctorUpdate] = useState(nameDoctor);
-    // const [textDateUpdate, setTexDateUpdate] = useState(date);
-    // const [textComplaintsUpdate, setTextComplaintsUpdate] = useState(textComplaints);
+    const [modalUpdate, setModalUpdate] = useState(false);
 
-   useEffect( async() =>{
+    useEffect( async() =>{
         await axios.get('http://localhost:4000/allTricks').then(res => {
             console.log('000', res.data.data);
+
+            // let arr = res.data.data;
+            // arr.forEach(val => {
+            //     val.date = val.date.substring(0,10);
+            // })
+            // setTricks(arr);
 
             setTricks(res.data.data);
             console.log('console.log(setTricks(res.data.data)) ', setTricks(res.data.data));
@@ -31,17 +37,7 @@ function Tricks() {
     }, []);
 
 
-    // let arr = res.data.data;
-    // arr.forEach(val => {
-    //     val.date = val.date.substring(0,10);
-    // })
-    // setTricks(arr);
-
-// ***************************
-
     const createNewTrick = async () => {
-        // console.log('111',  date);
-        console.log('tricks11 ', tricks);
         axios.post('http://localhost:4000/createTrick', {
             namePatient,
             nameDoctor,
@@ -58,51 +54,54 @@ function Tricks() {
             setTricks(copy);
 
         });
-
-        await console.log('tricks22 ', tricks);
-        await console.log('looooog ', namePatient)
     }
 
-    const updateTrick = async (value, index) => {
-        console.log(value);
+    const openModalUpdate = async (index) => {
 
-        await axios.patch('http://localhost:4000/updateTrick', {
-            id: tricks[index]._id,
-            namePatient: value,
-            textDoctor: value,
-            date: value,
-            textComplaints: value,
+        // setNamePatient(tricks[index].namePatient);
+        // setNameDoctor(tricks[index].nameDoctor);
+        // setDate(tricks[index].date);
+        // setTextComplaints(tricks[index].textComplaints);
 
+        let validDate = tricks[index].date.substring(0,10);
+        setUpdateDate(validDate);
+        setUpdateNamePatient(tricks[index].namePatient);
+        setUpdateNameDoctor(tricks[index].nameDoctor);
+        setUpdateTextComplaints(tricks[index].textComplaints);
+
+        setModalUpdate(true);
+    }
+
+    const updateTrick = async () => {
+        console.log('looooooog00000 ', namePatient);
+        console.log('looooooog11111 ', updateNamePatient);
+
+        await axios.put('http://localhost:4000/updateTrick', {
+            namePatient,
+            nameDoctor,
+            date,
+            textComplaints,
+            updateNamePatient,
+            updateNameDoctor,
+            updateDate,
+            updateTextComplaints
         }).then(res => {
-            setTricks(res.data.data);
+           setNamePatient(updateNamePatient);
+           setNameDoctor(updateNameDoctor);
+           setDate(updateDate);
+           setTextComplaints(updateTextComplaints);
+
         });
     }
-
-    // const deleteTrick = (index) => {
-    //     console.log('4441 ', index);
-    //     console.log('4442 ', tricks[index]);
-    //     console.log('4443 ', tricks[index]._id);
-    //      axios.delete('http://localhost:4000/deleteTrick', {
-    //          tricks[index]._id
-    //     }).then(res => {
-    //         // setTricks(res.data.data);
-    //         console.log('llllll ',tricks[index]._id)
-    //     });
-    //
-    //    // await tricks.splice(index, 1);
-    // }
 
 
     const deleteTrick = async (index) => {
-        console.log('4441 ', index);
-        console.log('4442 ', tricks[index]);
-        console.log('4443 ', tricks[index]._id);
-        await axios.delete('http://localhost:4000/deleteTask?id=:tricks[index].id', {
-        }).then(res => {
-            setTricks(res.data.data);
+        await axios.delete(`http://localhost:4000/deleteTrick/${tricks[index]._id}`).then(res => {
+            const copy = tricks.map(value => value); //изменение копии стейта
+            copy.splice(index, 1);
+            setTricks(copy);
         });
     }
-
 
     const change = trick => (event) =>{
         trick.textPatientUpdate = event.target.value;
@@ -112,9 +111,8 @@ function Tricks() {
     console.log('LOOG', tricks);
 
   return (
-<div className="reg-page">
+<div className="tricks-page">
       <main>
-
           <div className="recording-wrapper">
               <div className="patient-name">
                   <p>Имя:</p>
@@ -124,6 +122,7 @@ function Tricks() {
                          required/>
               </div>
 
+              {/*есть такая штука как <datalist>, может она подойдет лучше*/}
               <div className="doctor-name">
                   <p>Врач:</p>
                   <select name="doctor-list"
@@ -168,13 +167,64 @@ function Tricks() {
                                   <img className="text-trick-btn-delete" src={close}
                                        onClick={() => deleteTrick(index)}/>
                                   <img className="text-trick-btn-update" src={edit}
-                                       onClick={() => setModalUpdate(true)}/>
+                                  onClick={() => openModalUpdate(index)}/>
                               </div>
                           </div>
                       )
                   }
           </div>
       </main>
+
+
+    {/*MODAL WINDOW*/}
+    <Modal className="modal-update" isOpen={modalUpdate} contentLabel="Example Modal">
+        <div className="modal-header">Изменить прием</div>
+
+        <div className="modal-wrapper">
+            <div className="patient-name">
+                <p>Имя:</p>
+                <input type="text"
+                       value={updateNamePatient}
+                       onChange={(e) => setUpdateNamePatient(e.target.value)}
+                       required/>
+            </div>
+
+            <div className="doctor-name">
+                <p>Врач:</p>
+                <select name="doctor-list"
+                        value={updateNameDoctor}
+                        onChange={(e) => setUpdateNameDoctor(e.target.value) }>
+                    <option>-</option>
+                    <option value="Иванов Алексей Николаевич">Иванов Алексей Николаевич</option>
+                    <option value="Остапова Валентина Александровна">Остапова Валентина Александровна</option>
+                </select>
+            </div>
+
+            <div className="date">
+                <p>Дата:</p>
+                <input type="date"
+                       value={updateDate}
+                       onChange={(e) => setUpdateDate(e.target.value)}
+                       required/>
+            </div>
+
+            <div className="complaints">
+                <p>Жалобы:</p>
+                <input type="text"
+                       value={updateTextComplaints}
+                       onChange={(e) => setUpdateTextComplaints(e.target.value)}
+                       required/>
+            </div>
+
+
+        <div className="modal-btn-footer">
+            <button className='modal-btn-close' isOpen={false} onClick={() => setModalUpdate(false)}>Cancel</button>
+            <button className='modal-btn-save' onClick={() => updateTrick()}>Save</button>
+        </div>
+        </div>
+
+    </Modal>
+
 </div>
   );
 }

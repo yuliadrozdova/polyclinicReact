@@ -80,7 +80,7 @@ function Authorization() {
     }
 
     return (
-<div className="reg-page">
+<div className="authorization-page">
       <main>
           <div className="col-left"><img src={polic} className="polic-img" alt="polic"/></div>
           <div className="col-right">
