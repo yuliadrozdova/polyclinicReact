@@ -1,53 +1,36 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Modal from "react-modal";
 import axios from "axios";
 
-const AddEditTrickModal = ({item, isOpen}) => {
-    console.log('logloglogloglog')
-    const [values, setValues] = useState({ ...item })
+const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
+    const [values, setValues] = useState({ ...item });
+
+    useEffect(() => {                                                  //проверяет обновление item
+        setValues({ ...item });
+    },[item])
 
     const updateInput = (e) => {
-        const { value, id } = e.target;
+        const {value, id} = e.target;
         const field = id.replace('modal-', '')
         setValues({ ...values, [field]: value });
     }
 
     const updateTrick = async () => {
-        console.log('updateInput ', updateInput);
-        // console.log('looooooog11111 ');
-
-
-
-
-        // // console.log('looooooog00000 ', namePatient);
-        // // console.log('looooooog11111 ', updateNamePatient);
-        //
-        // await axios.put('http://localhost:4000/updateTrick', {
-        //     namePatient,
-        //     nameDoctor,
-        //     date,
-        //     textComplaints,
-        //     updateNamePatient,
-        //     updateNameDoctor,
-        //     updateDate,
-        //     updateTextComplaints
-        // }).then(res => {
-        //     setNamePatient(updateNamePatient);
-        //     setNameDoctor(updateNameDoctor);
-        //     setDate(updateDate);
-        //     setTextComplaints(updateTextComplaints);
-        //
-        // });
-        //
-        // // await setNamePatient(tricks[index].updateNamePatient);
-        // // await setNameDoctor(tricks[index].updateNameDoctor);
-        // // await setDate(tricks[index].updateDate);
-        // // await setTextComplaints(tricks[index].updateTextComplaints);
+        console.log('updateInput ', values);
+        await axios.put('http://localhost:4000/updateTrick', {
+            values,                                                        //не правильно
+        }).then(res => {
+            newItem(values);
+            setValues('');
+        });
+        console.log('222 ', item);
+        await onClose(true);
     }
 
     return (
-        <Modal className="modal-update" isOpen={isOpen} contentLabel="Example Modal">
+        <Modal className="modal-update" isOpen={isOpen} contentLabel="Example Modal" onRequestClose={onClose}
+               shouldCloseOnOverlayClick={true}>
             <div className="modal-header">Изменить прием</div>
 
             <div className="modal-wrapper">
@@ -90,9 +73,8 @@ const AddEditTrickModal = ({item, isOpen}) => {
                            required/>
                 </div>
 
-
                 <div className="modal-btn-footer">
-                    <button className='modal-btn-close' onClick={false}>Cancel</button>
+                    <button className='modal-btn-close' onClick={onClose}>Cancel</button>
                     <button className='modal-btn-save' onClick={() => updateTrick()}>Save</button>
                 </div>
             </div>
@@ -104,6 +86,7 @@ const AddEditTrickModal = ({item, isOpen}) => {
 AddEditTrickModal.propTypes = {
     item: PropTypes.object,
     isOpen: PropTypes.bool,
+    onClose: PropTypes.bool,
 };
 
 export default AddEditTrickModal;

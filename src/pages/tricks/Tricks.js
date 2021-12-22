@@ -4,7 +4,6 @@ import edit from '../../images/edit.svg';
 import close from '../../images/delete.svg'
 import '../../styles/tricks.css';
 import '../../styles/modalUpdate.css';
-import Modal from 'react-modal';
 import AddEditTrickModal from "./componets/addEditTrickModal/addEditTrickModal";
 
 function Tricks() {
@@ -14,24 +13,24 @@ function Tricks() {
     const [date, setDate] = useState('');
     const [textComplaints, setTextComplaints] = useState('');
 
-    const [updateNamePatient, setUpdateNamePatient] = useState(namePatient);
-    const [updateNameDoctor, setUpdateNameDoctor] = useState(nameDoctor);
-    const [updateDate, setUpdateDate] = useState(date);
-    const [updateTextComplaints, setUpdateTextComplaints] = useState(textComplaints);
+    const [showModal, setShowModal] = useState(false);
+    const [itemModal, setItemModal] = useState('');
 
-    const [modalUpdate, setModalUpdate] = useState(false);
+    const handleClose = () => {
+        setShowModal(false)
+    }
 
     useEffect( async() =>{
         await axios.get('http://localhost:4000/allTricks').then(res => {
             console.log('000', res.data.data);
 
-            // let arr = res.data.data;
-            // arr.forEach(val => {
-            //     val.date = val.date.substring(0,10);
-            // })
-            // setTricks(arr);
+            let arr = res.data.data;
+            arr.forEach(val => {
+                val.date = val.date.substring(0,10);
+            })
+            setTricks(arr);
 
-            setTricks(res.data.data);
+            // setTricks(res.data.data);
             console.log('console.log(setTricks(res.data.data)) ', setTricks(res.data.data));
         });
 
@@ -57,28 +56,16 @@ function Tricks() {
         });
     }
 
-    const openModalUpdate = async (index) => {
 
-        setNamePatient(tricks[index].namePatient);
-        setNameDoctor(tricks[index].nameDoctor);
-        setDate(tricks[index].date);
-        setTextComplaints(tricks[index].textComplaints);
-
-        let validDate = tricks[index].date.substring(0,10);
-        setUpdateDate(validDate);
-        setUpdateNamePatient(tricks[index].namePatient);
-        setUpdateNameDoctor(tricks[index].nameDoctor);
-        setUpdateTextComplaints(tricks[index].textComplaints);
-
-        setModalUpdate(true);
+    const editTrick = (item, index) => {
+        console.log('12121 ', item);
+        setNamePatient(item.namePatient);
     }
-const abc = (item) => {
-         const isOpen = true;
 
-    AddEditTrickModal({item, isOpen})
-}
-
-
+    const openModalUpdate = async (index) => {
+        setItemModal(tricks[index]);
+        setShowModal(true)
+    }
 
     const deleteTrick = async (index) => {
         await axios.delete(`http://localhost:4000/deleteTrick/${tricks[index]._id}`).then(res => {
@@ -152,14 +139,17 @@ const abc = (item) => {
                                   <img className="text-trick-btn-delete" src={close}
                                        onClick={() => deleteTrick(index)}/>
                                   <img className="text-trick-btn-update" src={edit}
-                                  onClick={() => abc(trick) }/>
+                                  onClick={() => openModalUpdate(index) }/>
                               </div>
                           </div>
                       )
                   }
           </div>
       </main>
-    {/*<AddEditTrickModal />*/}
+    <AddEditTrickModal item={itemModal}
+                       onClose={handleClose}
+                       isOpen={showModal}
+                       newItem={editTrick}/>
 </div>
   );
 }
