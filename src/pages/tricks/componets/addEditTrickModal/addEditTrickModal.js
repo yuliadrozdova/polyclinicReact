@@ -17,14 +17,14 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
     }
 
     const updateTrick = async () => {
-        console.log('updateInput ', values);
+
         await axios.put('http://localhost:4000/updateTrick', {
             values,                                                        //не правильно
         }).then(res => {
             newItem(values);
             setValues('');
         });
-        console.log('222 ', item);
+
         await onClose(true);
     }
 

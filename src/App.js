@@ -16,7 +16,7 @@ export default function App() {
     if(Link.to = '/registration'){
         headerPage = 'Зарегистрироваться в системе'
     }
-    if(Link.to = '/authorization'){
+    if(Link.to = '/'){
         headerPage = 'Войти в систему'
     }
     if(Link.to = '/tricks'){
@@ -44,7 +44,7 @@ export default function App() {
                             <Link to="/tricks">Tricks</Link>
                         </li>
                         <li>
-                            <Link to="/authorization">Authorization</Link>
+                            <Link to="/">Authorization</Link>
                         </li>
                         <li>
                             <Link to="/registration">Registration</Link>
@@ -53,7 +53,7 @@ export default function App() {
                 </nav>
 
                 <Routes>
-                    <Route exact path="/authorization" element={
+                    <Route exact path="/" element={
                         <div className="App">
                             <Authorization/>
                         </div>}/>
