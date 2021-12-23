@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
-import edit from './images/edit.svg';
-import close from './images/delete.svg';
-import './styles/tricks.css';
-import './styles/modalUpdate.css';
-import Modal from 'react-modal';
+import edit from '../../images/edit.svg';
+import close from '../../images/delete.svg'
+import '../../styles/tricks.css';
+import '../../styles/modalUpdate.css';
+import AddEditTrickModal from "./componets/addEditTrickModal/addEditTrickModal";
 
 function Tricks() {
     const [tricks, setTricks] = useState([]);
@@ -13,24 +13,24 @@ function Tricks() {
     const [date, setDate] = useState('');
     const [textComplaints, setTextComplaints] = useState('');
 
-    const [updateNamePatient, setUpdateNamePatient] = useState(namePatient);
-    const [updateNameDoctor, setUpdateNameDoctor] = useState(nameDoctor);
-    const [updateDate, setUpdateDate] = useState(date);
-    const [updateTextComplaints, setUpdateTextComplaints] = useState(textComplaints);
+    const [showModal, setShowModal] = useState(false);
+    const [itemModal, setItemModal] = useState('');
 
-    const [modalUpdate, setModalUpdate] = useState(false);
+    const handleClose = () => {
+        setShowModal(false)
+    }
 
     useEffect( async() =>{
         await axios.get('http://localhost:4000/allTricks').then(res => {
             console.log('000', res.data.data);
 
-            // let arr = res.data.data;
-            // arr.forEach(val => {
-            //     val.date = val.date.substring(0,10);
-            // })
-            // setTricks(arr);
+            let arr = res.data.data;
+            arr.forEach(val => {
+                val.date = val.date.substring(0,10);
+            })
+            setTricks(arr);
 
-            setTricks(res.data.data);
+            // setTricks(res.data.data);
             console.log('console.log(setTricks(res.data.data)) ', setTricks(res.data.data));
         });
 
@@ -56,44 +56,16 @@ function Tricks() {
         });
     }
 
+
+    const editTrick = (item, index) => {
+        console.log('12121 ', item);
+        setNamePatient(item.namePatient);
+    }
+
     const openModalUpdate = async (index) => {
-
-        // setNamePatient(tricks[index].namePatient);
-        // setNameDoctor(tricks[index].nameDoctor);
-        // setDate(tricks[index].date);
-        // setTextComplaints(tricks[index].textComplaints);
-
-        let validDate = tricks[index].date.substring(0,10);
-        setUpdateDate(validDate);
-        setUpdateNamePatient(tricks[index].namePatient);
-        setUpdateNameDoctor(tricks[index].nameDoctor);
-        setUpdateTextComplaints(tricks[index].textComplaints);
-
-        setModalUpdate(true);
+        setItemModal(tricks[index]);
+        setShowModal(true)
     }
-
-    const updateTrick = async () => {
-        console.log('looooooog00000 ', namePatient);
-        console.log('looooooog11111 ', updateNamePatient);
-
-        await axios.put('http://localhost:4000/updateTrick', {
-            namePatient,
-            nameDoctor,
-            date,
-            textComplaints,
-            updateNamePatient,
-            updateNameDoctor,
-            updateDate,
-            updateTextComplaints
-        }).then(res => {
-           setNamePatient(updateNamePatient);
-           setNameDoctor(updateNameDoctor);
-           setDate(updateDate);
-           setTextComplaints(updateTextComplaints);
-
-        });
-    }
-
 
     const deleteTrick = async (index) => {
         await axios.delete(`http://localhost:4000/deleteTrick/${tricks[index]._id}`).then(res => {
@@ -167,64 +139,17 @@ function Tricks() {
                                   <img className="text-trick-btn-delete" src={close}
                                        onClick={() => deleteTrick(index)}/>
                                   <img className="text-trick-btn-update" src={edit}
-                                  onClick={() => openModalUpdate(index)}/>
+                                  onClick={() => openModalUpdate(index) }/>
                               </div>
                           </div>
                       )
                   }
           </div>
       </main>
-
-
-    {/*MODAL WINDOW*/}
-    <Modal className="modal-update" isOpen={modalUpdate} contentLabel="Example Modal">
-        <div className="modal-header">Изменить прием</div>
-
-        <div className="modal-wrapper">
-            <div className="patient-name">
-                <p>Имя:</p>
-                <input type="text"
-                       value={updateNamePatient}
-                       onChange={(e) => setUpdateNamePatient(e.target.value)}
-                       required/>
-            </div>
-
-            <div className="doctor-name">
-                <p>Врач:</p>
-                <select name="doctor-list"
-                        value={updateNameDoctor}
-                        onChange={(e) => setUpdateNameDoctor(e.target.value) }>
-                    <option>-</option>
-                    <option value="Иванов Алексей Николаевич">Иванов Алексей Николаевич</option>
-                    <option value="Остапова Валентина Александровна">Остапова Валентина Александровна</option>
-                </select>
-            </div>
-
-            <div className="date">
-                <p>Дата:</p>
-                <input type="date"
-                       value={updateDate}
-                       onChange={(e) => setUpdateDate(e.target.value)}
-                       required/>
-            </div>
-
-            <div className="complaints">
-                <p>Жалобы:</p>
-                <input type="text"
-                       value={updateTextComplaints}
-                       onChange={(e) => setUpdateTextComplaints(e.target.value)}
-                       required/>
-            </div>
-
-
-        <div className="modal-btn-footer">
-            <button className='modal-btn-close' isOpen={false} onClick={() => setModalUpdate(false)}>Cancel</button>
-            <button className='modal-btn-save' onClick={() => updateTrick()}>Save</button>
-        </div>
-        </div>
-
-    </Modal>
-
+    <AddEditTrickModal item={itemModal}
+                       onClose={handleClose}
+                       isOpen={showModal}
+                       newItem={editTrick}/>
 </div>
   );
 }

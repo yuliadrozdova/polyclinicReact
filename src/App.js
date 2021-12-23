@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import Registration from './Registration';
 import Authorization from "./Authorization";
-import Tricks from "./Tricks";
+import Tricks from "./pages/tricks/Tricks";
 
 export default function App() {
     let headerPage = '';

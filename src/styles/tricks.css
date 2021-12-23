@@ -40,6 +40,7 @@ input[type='date']{
 .tricks-list div{
     display: flex;
     justify-content: center;
+    margin-top: 15px;
 }
 .tricks-list div:last-child{
     display: flex;
