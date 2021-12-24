@@ -23,6 +23,9 @@ function Tricks() {
     const [sortTricks, setSortTricks] = useState('none');
     const [sortDirect, setSortDirect] = useState('asc');
 
+    const [startFilterTricks, setStartFilter] = useState('');
+    const [endFilterTricks, setEndFilter] = useState('');
+
     useEffect( async() =>{
         await axios.get('http://localhost:4000/allTricks').then(res => {
             let arr = res.data.data;
@@ -162,6 +165,60 @@ function Tricks() {
     },[sortTricks, sortDirect])
 
 
+    const filterTricks = (startDate, endDate) => {
+        // console.log('start ', startDate);
+        console.log('end ', endDate);
+        const copy = tricks.map(value => value);
+        //const copy = [];
+
+        if (startDate === '' && endDate  === ''){
+            console.log('111');
+
+            axios.get('http://localhost:4000/allTricks').then(res => {
+                let arr = res.data.data;
+                arr.forEach(val => {
+                    val.date = val.date.substring(0,10);
+                })
+                return  setTricks(arr);
+            });
+        } else if (startDate === '' && endDate !== ''){
+            console.log('222');
+            tricks.forEach(value => {
+                if (value.date < endDate ){
+                    copy.push(value);
+                }
+            })
+            return setTricks(copy);
+        } else if (startDate !== '' && endDate === ''){
+            console.log('333');
+            tricks.forEach(value => {
+                if (value.date > startDate ){
+                    copy.push(value);
+                }
+            })
+            return setTricks(copy);
+        } else if (startDate !== '' && endDate !== ''){
+            console.log('444');
+            tricks.forEach(value => {
+                if (value.date < endDate ){
+                    copy.push(value);
+                }
+            })
+            return setTricks(copy);
+        }
+
+
+        // tricks.forEach(value => {
+        //     if (value.date > startDate && value.date < endDate){
+        //         copy.push(value);
+        //     }
+        // })
+        //
+        // return setTricks(copy);
+
+
+    }
+
 
     console.log('LOOG', tricks);
 
@@ -239,6 +296,32 @@ function Tricks() {
                       </div>
                   </div>
               </div>
+              <div className="filter">
+                  <div className="filter-wrap">
+                      <div className="start-filter-input">
+                          <div className="date">
+                              <p>с:</p>
+                              <input type="date"
+                                     value={startFilterTricks}
+                                     onChange={(e) => setStartFilter(e.target.value)}
+                                     required/>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div className="end-filter">
+                      <div className="end-filter-input">
+                          <div className="date">
+                              <p>по:</p>
+                              <input type="date"
+                                     value={endFilterTricks}
+                                     onChange={(e) => setEndFilter(e.target.value)}
+                                     required/>
+                          </div>
+                      </div>
+                  </div>
+                  <button  onClick={() => filterTricks(startFilterTricks, endFilterTricks)}>Фильтровать</button>
+              </div>
 
                   {tricks.map((trick, index) =>
                           <div className="tricks-list-wrap" key={`trick-${index}`}>
@@ -268,21 +351,6 @@ function Tricks() {
                        onClose={onCloseDelete}
                        isOpen={showModalDelete}
                        newTricks={deleteTrick}/>
-
-    {/*<Modal className="modal-update" isOpen={showModalDelete} contentLabel="Example Modal" onRequestClose={onCloseDelete}*/}
-    {/*       shouldCloseOnOverlayClick={true}>*/}
-    {/*    <div className="modal-header">Удалить прием</div>*/}
-    {/*       <div className="modal-delete-text">Вы действительно хотите удалить прием?</div>*/}
-
-    {/*    <div className="modal-btn-footer">*/}
-    {/*        <button className='modal-btn-close' onClick={onCloseDelete}>Cancel</button>*/}
-    {/*        <button className='modal-btn-save' onClick={() => deleteTrick(index)}>Save</button>*/}
-    {/*    </div>*/}
-
-
-
-    {/*</Modal>*/}
-
 
 
 </div>
