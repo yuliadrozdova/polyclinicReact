@@ -20,7 +20,7 @@ const AddDeleteTrickModal = ({item, isOpen, onClose, newTricks}) => {
 
             <div className="modal-btn-footer">
                 <button className='modal-btn-close' onClick={onClose}>Cancel</button>
-                <button className='modal-btn-save' onClick={() => deleteTrick(item)}>Save</button>
+                <button className='modal-btn-save' onClick={() => deleteTrick(item)}>Delete</button>
             </div>
         </Modal>
     );

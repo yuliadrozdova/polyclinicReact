@@ -1,36 +1,36 @@
-body{
+body {
     margin: 0 auto;
     background-color: #C5E9FF;
     font-family: Roboto;
 }
 
-.logo{
+.logo {
     width: 88px;
     height: 70px;
     margin: 22px 75px 24px 20px;
 }
-.authorization-page main{
+.authorization-page main {
     max-width: 1000px;
     margin: 0 auto;
     display: flex;
     justify-content: center;
     padding-top: 40px;
 }
-.col-left, .col-right{
+.col-left, .col-right {
     margin: auto 25px;
     width: 50%;
 }
-.col-left{
+.col-left {
     text-align: end;
 }
-.col-right{
+.col-right {
     text-align: start;
 }
-.polic-img{
+.polic-img {
     width: 375px;
     height: 375px;
 }
-form{
+form {
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -40,17 +40,17 @@ form{
     height: fit-content;
     min-height: 450px;
 }
-h2{
+h2 {
     font-size: 36px;
     font-weight: 300;
     line-height: 118%;
 }
-p{
+p {
     text-align: left;
     font-size: 18px;
     margin: 8px 0;
 }
-button{
+.authorization-page button {
     align-self: flex-end;
     font-size: 18px;
     padding: 10px;
@@ -61,6 +61,7 @@ button{
     margin: 15px 0 8px;
     min-width: 150px;
     max-height: 40px;
+    cursor: pointer;
 }
 a {
     text-align: right;
@@ -69,13 +70,13 @@ a {
     font-size: 18px;
     margin-bottom: 25px;
 }
-input, select{
+input, select {
     border: 1px solid rgba(0,0,0,0.2);
     padding: 10px 0 10px 20px;
     border-radius: 4px;
     font-size: 18px;
 }
-input::placeholder{
+input::placeholder {
     color: rgba(0,0,0,0.2);
     font-size: 18px;
 
