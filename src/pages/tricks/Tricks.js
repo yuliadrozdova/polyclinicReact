@@ -219,7 +219,7 @@ function Tricks() {
                           <select name="sort-list"
                                   value={sortTricks}
                                   onChange={(e) => setSortTricks(e.target.value)}>
-                              <option value="none">None</option>
+                              <option value="none">-</option>
                               <option value="name">Имя</option>
                               <option value="doctor">Врач</option>
                               <option value="date">Дата</option>
@@ -268,21 +268,6 @@ function Tricks() {
                        onClose={onCloseDelete}
                        isOpen={showModalDelete}
                        newTricks={deleteTrick}/>
-
-    {/*<Modal className="modal-update" isOpen={showModalDelete} contentLabel="Example Modal" onRequestClose={onCloseDelete}*/}
-    {/*       shouldCloseOnOverlayClick={true}>*/}
-    {/*    <div className="modal-header">Удалить прием</div>*/}
-    {/*       <div className="modal-delete-text">Вы действительно хотите удалить прием?</div>*/}
-
-    {/*    <div className="modal-btn-footer">*/}
-    {/*        <button className='modal-btn-close' onClick={onCloseDelete}>Cancel</button>*/}
-    {/*        <button className='modal-btn-save' onClick={() => deleteTrick(index)}>Save</button>*/}
-    {/*    </div>*/}
-
-
-
-    {/*</Modal>*/}
-
 
 
 </div>
