@@ -168,8 +168,8 @@ function Tricks() {
     const filterTricks = (startDate, endDate) => {
         // console.log('start ', startDate);
         console.log('end ', endDate);
-        const copy = tricks.map(value => value);
-        //const copy = [];
+        const newArray = tricks.map(value => value);
+        const copy = [];
 
         if (startDate === '' && endDate  === ''){
             console.log('111');
@@ -183,7 +183,7 @@ function Tricks() {
             });
         } else if (startDate === '' && endDate !== ''){
             console.log('222');
-            tricks.forEach(value => {
+            newArray.forEach(value => {
                 if (value.date < endDate ){
                     copy.push(value);
                 }
@@ -191,7 +191,7 @@ function Tricks() {
             return setTricks(copy);
         } else if (startDate !== '' && endDate === ''){
             console.log('333');
-            tricks.forEach(value => {
+            newArray.forEach(value => {
                 if (value.date > startDate ){
                     copy.push(value);
                 }
@@ -199,7 +199,7 @@ function Tricks() {
             return setTricks(copy);
         } else if (startDate !== '' && endDate !== ''){
             console.log('444');
-            tricks.forEach(value => {
+            newArray.forEach(value => {
                 if (value.date < endDate ){
                     copy.push(value);
                 }
