@@ -1,3 +1,10 @@
+.btn-inactive{
+background: lightgray;
+}
+.btn-active{
+    background: white;
+}
+
 
 .tricks-page body{
     margin: 0 auto;

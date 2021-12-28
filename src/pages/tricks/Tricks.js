@@ -26,6 +26,8 @@ function Tricks() {
     const [startFilterTricks, setStartFilter] = useState('');
     const [endFilterTricks, setEndFilter] = useState('');
 
+    const [disabledBtn, setDisabledBtn] = useState('disabled');
+
     useEffect( async() =>{
         await axios.get('http://localhost:4000/allTricks').then(res => {
             let arr = res.data.data;
@@ -36,6 +38,19 @@ function Tricks() {
         });
 
     }, []);
+
+    let buttonClass = 'btn-inactive';
+    useEffect( async() =>{
+        if (namePatient !== '' && nameDoctor !== '' && date !== '' && textComplaints !== ''){
+            buttonClass = 'btn-inactive';
+            console.log('enabled')
+            setDisabledBtn('')
+        }else{
+            buttonClass = 'btn-inactive';
+            setDisabledBtn('disabled');
+        }
+    }, [namePatient, nameDoctor, date, textComplaints]);
+
 
 
 
@@ -165,57 +180,55 @@ function Tricks() {
     },[sortTricks, sortDirect])
 
 
-    const filterTricks = (startDate, endDate) => {
-        // console.log('start ', startDate);
-        console.log('end ', endDate);
-        const newArray = tricks.map(value => value);
+    const filterTricks = async (startDate, endDate) => {
+        console.log('start ', startDate);
+        let newArray = [];
         const copy = [];
+
+        await axios.get('http://localhost:4000/allTricks').then(res => {
+           newArray = res.data.data;
+            console.log('newArray1 ', newArray);
+            newArray.forEach(val => {
+                val.date = val.date.substring(0,10);
+            })
+            console.log('newArray2 ', newArray);
+        });
+
+
+        console.log('end ', endDate);
+        console.log('newArray ', newArray);
 
         if (startDate === '' && endDate  === ''){
             console.log('111');
+            return  setTricks(newArray);
 
-            axios.get('http://localhost:4000/allTricks').then(res => {
-                let arr = res.data.data;
-                arr.forEach(val => {
-                    val.date = val.date.substring(0,10);
-                })
-                return  setTricks(arr);
-            });
         } else if (startDate === '' && endDate !== ''){
             console.log('222');
             newArray.forEach(value => {
-                if (value.date < endDate ){
+                if (value.date <= endDate ){
                     copy.push(value);
                 }
             })
             return setTricks(copy);
+
         } else if (startDate !== '' && endDate === ''){
             console.log('333');
             newArray.forEach(value => {
-                if (value.date > startDate ){
+                if (value.date >= startDate ){
                     copy.push(value);
                 }
             })
             return setTricks(copy);
+
         } else if (startDate !== '' && endDate !== ''){
             console.log('444');
             newArray.forEach(value => {
-                if (value.date < endDate ){
+                if (value.date >= startDate && value.date <= endDate){
                     copy.push(value);
                 }
             })
             return setTricks(copy);
         }
-
-
-        // tricks.forEach(value => {
-        //     if (value.date > startDate && value.date < endDate){
-        //         copy.push(value);
-        //     }
-        // })
-        //
-        // return setTricks(copy);
-
 
     }
 
@@ -263,12 +276,23 @@ function Tricks() {
                     </div>
 
                     <div className="recording-btn">
-                        <button onClick={() => createNewTrick()}>Добавить</button>
+                        <button className={buttonClass} disabled={disabledBtn} onClick={() => createNewTrick()}>Добавить</button>
                     </div>
                 </div>
 
-                <div className="tricks-list">
 
+
+
+
+
+
+
+
+
+
+
+
+                <div className="tricks-list">
                     <div className="sort">
                         <div className="sort-wrap">
                             <div>Сортировать по:</div>
@@ -276,7 +300,7 @@ function Tricks() {
                                 <select name="sort-list"
                                         value={sortTricks}
                                         onChange={(e) => setSortTricks(e.target.value)}>
-                                    <option value="none">None</option>
+                                    <option value="none">-</option>
                                     <option value="name">Имя</option>
                                     <option value="doctor">Врач</option>
                                     <option value="date">Дата</option>
@@ -332,7 +356,6 @@ function Tricks() {
 
                             <div className="text-trick-btn">
                                 <img className="text-trick-btn-delete" src={close}
-                                    // onClick={() => deleteTrick(index)}/>
                                      onClick={() => openModalDelete(index)}/>
                                 <img className="text-trick-btn-update" src={edit}
                                      onClick={() => openModalUpdate(index) }/>
@@ -351,6 +374,10 @@ function Tricks() {
                                  onClose={onCloseDelete}
                                  isOpen={showModalDelete}
                                  newTricks={deleteTrick}/>
+
+
+
+
 
 
         </div>
