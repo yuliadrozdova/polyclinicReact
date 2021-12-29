@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import axios from "axios";
 import polic from './images/polic.svg';
 import './styles/authorization.css';
+import { useNavigate } from "react-router-dom";
 
 function Authorization() {
-
+    let navigate = useNavigate();
+console.log('LOOG', navigate);
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
 
@@ -14,7 +16,6 @@ function Authorization() {
     const [passwordDirty, setPasswordDirty] = useState(false);
     const [passwordError, setPasswordError] = useState('invalid');
 
-    let countError = 2;
 
     const loginHandleChange = (e) => {
         const loginValue = e.target.value;
@@ -28,7 +29,7 @@ function Authorization() {
             setLoginError('Логин должен содержать минимум 6 символов')
         } else {
             setLoginError('')
-            countError -= countError;
+            setLoginDirty(false);
         }
     }
 
@@ -53,38 +54,37 @@ function Authorization() {
             setPasswordError('Пароль не должен содержать пробелы')
         } else {
             setPasswordError('')
-            countError -= countError;
+            setPasswordDirty(false);
         }
-        console.log(countError)
     }
 
     console.log('LOOG', 'RENDER');
 
     const loginClick = async () => {
-        console.log(countError)
-        if (countError === 0) {
-            await axios.post('http://localhost:4000/loginUser', {
-                login: loginValue,
-                password: passwordValue
-            }).then(res => {
-                setLoginValue('');
-                setPasswordValue('');
-                console.log('111 ' + res.data.data);
 
-            });
-            window.open('/Tricks');
-        }else {
-            // window.open('/Tricks');
-            console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq')
+            if (loginDirty === false && passwordDirty === false) {
+                await axios.post('http://localhost:4000/loginUser', {
+                    login: loginValue,
+                    password: passwordValue
+                }).then(res => {
+                    setLoginValue('');
+                    setPasswordValue('');
+                    console.log('111 ' + res.data.data);
+                });
+                await navigate("/Tricks");
+
+            }else {
+                console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq')
+            }
         }
-    }
+
 
     return (
 <div className="authorization-page">
       <main>
           <div className="col-left"><img src={polic} className="polic-img" alt="polic"/></div>
           <div className="col-right">
-              <form>
+              <div>
                   <h2>Войти в систему</h2>
 
                   <p>Login:</p>
@@ -95,10 +95,10 @@ function Authorization() {
                   <input id="password" value={passwordValue} onChange={passwordHandleChange} type="password" placeholder="Password" required />
                   {(passwordDirty && passwordError) && <div style={{color: 'red'}}>{passwordError}</div>}
 
-                  <button onClick={() => loginClick()}>Войти</button>
+                  <button onClick={loginClick}>Войти</button>
                   <a href="/registration">Зарегистрироваться</a>
 
-              </form>
+              </div>
           </div>
       </main>
 </div>
