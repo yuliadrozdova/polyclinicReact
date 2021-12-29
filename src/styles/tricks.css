@@ -1,4 +1,5 @@
 
+
 .recording-btn button:disabled {
     background: #CCCCCC;
     color: rgba(0, 0 , 0, 0.5);
@@ -47,12 +48,12 @@ input[type='date']{
     margin: 0;
 }
 
-.tricks-list div{
+.tricks-list-wrap div{
     display: flex;
     justify-content: center;
     margin-top: 15px;
 }
-.tricks-list div:last-child{
+.tricks-list-wrap div:last-child{
     display: flex;
     justify-content: space-evenly;
 }
@@ -89,6 +90,15 @@ input[type='date']{
 
 
 
+.hidden {
+    display: none;
+}
+.visible {
+    display: block;
+}
 
 
-
+.sort, .filter{
+    display: flex;
+    justify-content: flex-end;
+}

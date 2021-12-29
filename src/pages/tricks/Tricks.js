@@ -28,6 +28,9 @@ function Tricks() {
 
     const [disabledBtn, setDisabledBtn] = useState('disabled');
 
+    const [classSort, setClassSort] = useState('hidden');
+    const [classFilter, setClassFilter] = useState('hidden');
+
     useEffect( async() =>{
         await axios.get('http://localhost:4000/allTricks').then(res => {
             let arr = res.data.data;
@@ -53,33 +56,39 @@ function Tricks() {
 
 
     const createNewTrick = async () => {
-        // let currentDate = new Date().toLocaleDateString();
-        // await currentDate.replaceAll(`/`, '-');
-        // // const currentDate = new Date().toLocaleDateString();
-        // // currentDate.replaceAll('/', '-'));
-        //
-        // console.log('currentDate ', currentDate);
-        // console.log('date ', date);
-        // if (date >= currentDate){
+         let currentDate = await new Date().toLocaleDateString().replaceAll('/', '-');
 
-        axios.post('http://localhost:4000/createTrick', {
-            namePatient,
-            nameDoctor,
-            date,
-            textComplaints
-        }).then(res => {
-            setNamePatient('');
-            setNameDoctor('');
-            setDate('');
-            setTextComplaints('');
+         if (date > currentDate){
+             console.log('> ', currentDate);
+         } else if (date < currentDate){
+             console.log('< ', currentDate);
+         }
 
-            const copy = tricks.map(value => value); //изменение копии стейта
-            let arr = res.data.data;
-            arr.date = arr.date.substring(0,10);
-            console.log('arr.date ', arr.date);
-            copy.push(arr);
-            setTricks(copy);
-        });
+
+        console.log('currentDate ', currentDate);
+        console.log('date ', date);
+
+
+        if (namePatient !== '' && nameDoctor !== '' && date !== '' && currentDate <= date && textComplaints !== ''){
+            axios.post('http://localhost:4000/createTrick', {
+                namePatient,
+                nameDoctor,
+                date,
+                textComplaints
+            }).then(res => {
+                setNamePatient('');
+                setNameDoctor('');
+                setDate('');
+                setTextComplaints('');
+
+                const copy = tricks.map(value => value); //изменение копии стейта
+                let arr = res.data.data;
+                arr.date = arr.date.substring(0,10);
+                console.log('arr.date ', arr.date);
+                copy.push(arr);
+                setTricks(copy);
+            });
+        }
     }
 
 
@@ -129,10 +138,17 @@ function Tricks() {
 
 
     useEffect(() => {                       //sort
+
+        setClassSort('hidden');
         const copy = tricks.map(value => value);
+
+
+        console.log(121212, sortTricks);
+
         switch(sortTricks) {
 
             case 'none':
+                setClassSort('hidden');
                 axios.get('http://localhost:4000/allTricks').then(res => {
                     let arr = res.data.data;
                     arr.forEach(val => {
@@ -142,6 +158,8 @@ function Tricks() {
                 });
 
             case 'name':
+                setClassSort('visible');
+
                 switch(sortDirect) {
                     case 'asc':
                         copy.sort((a,b) => a.namePatient.localeCompare(b.namePatient));
@@ -152,6 +170,7 @@ function Tricks() {
                 };
 
             case 'doctor':
+                setClassSort('visible');
                 switch(sortDirect) {
                     case 'asc':
                         copy.sort((a,b) => a.nameDoctor.localeCompare(b.nameDoctor));
@@ -162,6 +181,7 @@ function Tricks() {
                 };
 
             case 'date':
+                setClassSort('visible');
                 switch(sortDirect) {
                     case 'asc':
                         copy.sort((a,b) => a.date.localeCompare(b.date));
@@ -230,27 +250,31 @@ function Tricks() {
             })
             return setTricks(copy);
         }
-
-
-        // tricks.forEach(value => {
-        //     if (value.date > startDate && value.date < endDate){
-        //         copy.push(value);
-        //     }
-        // })
-        //
-        // return setTricks(copy);
-
-
-
     }
+
+
+
+
+
 
 
     console.log('LOOG', tricks);
 
 
+
+
     return (
+
         <div className="tricks-page">
             <main>
+
+                {/*<div className={abc}>*/}
+                {/*    <div>HELLO!!!</div>*/}
+
+                {/*    <button onClick={click}>click</button>*/}
+                {/*</div>*/}
+
+
                 <div className="recording-wrapper">
                     <div className="patient-name">
                         <p>Имя:</p>
@@ -321,7 +345,7 @@ function Tricks() {
                             </div>
                         </div>
 
-                        <div className="sort-direction">
+                        <div className={classSort}>
                             <div>Сортировать по:</div>
                             <div className="sort-input">
                                 <select name="sort-list"
@@ -333,6 +357,9 @@ function Tricks() {
                             </div>
                         </div>
                     </div>
+
+                    {/*********************/}
+
                     <div className="filter">
                         <div className="filter-wrap">
                             <div className="start-filter-input">
@@ -360,22 +387,33 @@ function Tricks() {
                         <button  onClick={() => filterTricks(startFilterTricks, endFilterTricks)}>Фильтровать</button>
                     </div>
 
-                    {tricks.map((trick, index) =>
-                        <div className="tricks-list-wrap" key={`trick-${index}`}>
-                            <div className="text-trick-patient">{trick.namePatient}</div>
-                            <div className="text-trick-doctor">{trick.nameDoctor}</div>
-                            <div className="text-trick-date">{trick.date}</div>
-                            <div className="text-trick-complaints">{trick.textComplaints}</div>
 
-                            <div className="text-trick-btn">
-                                <img className="text-trick-btn-delete" src={close}
-                                     onClick={() => openModalDelete(index)}/>
-                                <img className="text-trick-btn-update" src={edit}
-                                     onClick={() => openModalUpdate(index) }/>
-                            </div>
-                        </div>
-                    )
-                    }
+
+
+
+
+
+
+<div className='tricks-list-wrap'>
+    {tricks.map((trick, index) =>
+        <div className="trick-wrap" key={`trick-${index}`}>
+            <div className="text-trick-patient">{trick.namePatient}</div>
+            <div className="text-trick-doctor">{trick.nameDoctor}</div>
+            <div className="text-trick-date">{trick.date}</div>
+            <div className="text-trick-complaints">{trick.textComplaints}</div>
+
+            <div className="text-trick-btn">
+                <img className="text-trick-btn-delete" src={close}
+                     onClick={() => openModalDelete(index)}/>
+                <img className="text-trick-btn-update" src={edit}
+                     onClick={() => openModalUpdate(index) }/>
+            </div>
+        </div>
+    )
+    }
+</div>
+
+
                 </div>
             </main>
             <AddEditTrickModal item={itemModal}
