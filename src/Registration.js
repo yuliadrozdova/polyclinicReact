@@ -2,9 +2,13 @@ import React, {useEffect, useState} from 'react';
 import polic from './images/polic.svg';
 import './styles/registration.css';
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 
 function Registration() {
+    let navigate = useNavigate();
+    console.log('LOOG', navigate);
+
 
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
@@ -19,7 +23,6 @@ function Registration() {
     const [passwordRepeatDirty, setPasswordRepeatDirty] = useState(false);
     const [passwordRepeatError, setPasswordRepeatError] = useState('invalid');
 
-    // let countError = 3;
 
     const loginHandleChange = (e) => {
         const loginValue = e.target.value;
@@ -35,7 +38,6 @@ function Registration() {
         } else {
             setLoginError('');
             setLoginDirty(false);
-            // countError -= countError;
         }
     }
 
@@ -62,7 +64,6 @@ function Registration() {
         } else {
             setPasswordError('');
             setPasswordDirty(false);
-            // countError = countError - 1;
         }
     }
 
@@ -77,9 +78,7 @@ function Registration() {
         }else {
             setPasswordRepeatDirty(false);
         }
-
     }
-
 
     useEffect(() => {
         if(passwordRepeatValue !== passwordValue){
@@ -88,12 +87,10 @@ function Registration() {
         } else {
             setPasswordRepeatError('')
             setPasswordRepeatDirty(false);
-            // countError -= countError;
         }
 
     },[passwordValue, passwordRepeatValue])
 
-    // console.log('countError ', countError);
     console.log('LOOG', 'RENDER');
 
     const handleClick = async () => {
@@ -108,8 +105,8 @@ function Registration() {
                 setPasswordValue('');
                 setPasswordRepeatValue('');
                 console.log('111 ' + res.data.data);
-                window.open('/tricks');
-               // window.location = '/tricks';
+
+                navigate("/Tricks");
             });
         }else{
             console.log('NO')

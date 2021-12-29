@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import polic from './images/polic.svg';
 import './styles/authorization.css';
 import { useNavigate } from "react-router-dom";
+import Modal from "react-modal";
 
 function Authorization() {
     let navigate = useNavigate();
-console.log('LOOG', navigate);
+    console.log('LOOG', navigate);
+
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
 
@@ -16,6 +18,12 @@ console.log('LOOG', navigate);
     const [passwordDirty, setPasswordDirty] = useState(false);
     const [passwordError, setPasswordError] = useState('invalid');
 
+    const [showModalError, setShowModalError] = useState(false);
+    const [disabledBtn, setDisabledBtn] = useState('disabled');
+
+    const onClose = () => {
+        setShowModalError(false)
+    }
 
     const loginHandleChange = (e) => {
         const loginValue = e.target.value;
@@ -37,7 +45,7 @@ console.log('LOOG', navigate);
         const passwordValue = e.target.value;
         setPasswordValue(passwordValue);
 
-        if (passwordValue === ''){
+        if (passwordValue === '') {
             setPasswordDirty(true);
             setPasswordError('Поле не может быть пустым')
         } else if(passwordValue.length < 6){
@@ -58,10 +66,7 @@ console.log('LOOG', navigate);
         }
     }
 
-    console.log('LOOG', 'RENDER');
-
     const loginClick = async () => {
-
             if (loginDirty === false && passwordDirty === false) {
                 await axios.post('http://localhost:4000/loginUser', {
                     login: loginValue,
@@ -69,22 +74,35 @@ console.log('LOOG', navigate);
                 }).then(res => {
                     setLoginValue('');
                     setPasswordValue('');
-                    console.log('111 ' + res.data.data);
-                });
-                await navigate("/Tricks");
 
+                    navigate("/Tricks");
+                }).catch(error => {
+                    setShowModalError(true);
+                    console.log(error.response.status)
+                } );
             }else {
-                console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq')
+                console.log('error login')
             }
         }
 
+
+    useEffect( async() =>{
+        if (loginDirty === false && passwordDirty === false){
+            console.log('enabled')
+            setDisabledBtn('')
+        }else{
+            setDisabledBtn('disabled');
+        }
+    }, [loginDirty, passwordDirty]);
+
+    console.log('LOOG', 'RENDER');
 
     return (
 <div className="authorization-page">
       <main>
           <div className="col-left"><img src={polic} className="polic-img" alt="polic"/></div>
           <div className="col-right">
-              <div>
+              <div className="form">
                   <h2>Войти в систему</h2>
 
                   <p>Login:</p>
@@ -95,12 +113,24 @@ console.log('LOOG', navigate);
                   <input id="password" value={passwordValue} onChange={passwordHandleChange} type="password" placeholder="Password" required />
                   {(passwordDirty && passwordError) && <div style={{color: 'red'}}>{passwordError}</div>}
 
-                  <button onClick={loginClick}>Войти</button>
+                  <button onClick={loginClick} disabled={disabledBtn}>Войти</button>
                   <a href="/registration">Зарегистрироваться</a>
 
               </div>
           </div>
       </main>
+
+    <Modal className="modal-update" isOpen={showModalError} contentLabel="Example Modal" onRequestClose={onClose}
+           shouldCloseOnOverlayClick={true}>
+        <div className="modal-header">Ошибка аутентификации</div>
+        <div className="modal-delete-text">Данный пользователь не был найден. Попробуйте выести данные еще раз</div>
+
+        <div className="modal-btn-footer">
+            <button className='modal-btn-close' onClick={onClose}>Cancel</button>
+            {/*<button className='modal-btn-save' onClick={() => deleteTrick(item)}>Delete</button>*/}
+        </div>
+    </Modal>
+
 </div>
   );
 }

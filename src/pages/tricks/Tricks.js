@@ -39,14 +39,12 @@ function Tricks() {
 
     }, []);
 
-    let buttonClass = 'btn-inactive';
+
     useEffect( async() =>{
         if (namePatient !== '' && nameDoctor !== '' && date !== '' && textComplaints !== ''){
-            buttonClass = 'btn-inactive';
             console.log('enabled')
             setDisabledBtn('')
         }else{
-            buttonClass = 'btn-inactive';
             setDisabledBtn('disabled');
         }
     }, [namePatient, nameDoctor, date, textComplaints]);
@@ -291,7 +289,7 @@ function Tricks() {
                     </div>
 
                     <div className="recording-btn">
-                        <button className={buttonClass} disabled={disabledBtn} onClick={() => createNewTrick()}>Добавить</button>
+                        <button disabled={disabledBtn} onClick={() => createNewTrick()}>Добавить</button>
                     </div>
                 </div>
 

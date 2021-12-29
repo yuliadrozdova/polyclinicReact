@@ -16,6 +16,17 @@ body {
     justify-content: center;
     padding-top: 40px;
 }
+
+.form button:disabled {
+    background: #CCCCCC;
+    color: rgba(0, 0 , 0, 0.5);
+    cursor: auto;
+}
+.form button{
+    background: white;
+    cursor: pointer;
+}
+
 .col-left, .col-right {
     margin: auto 25px;
     width: 50%;
@@ -30,7 +41,7 @@ body {
     width: 375px;
     height: 375px;
 }
-form {
+.form {
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -82,16 +93,16 @@ input::placeholder {
 
 }
 @media (max-width: 900px) {
-    .polic-img{
+    .polic-img {
         zoom: 0.7;
     }
-    h2{
+    h2 {
         font-size: 30px;
     }
-    form{
+    .form {
         min-height: 415px;
     }
-    p, button, a, input{
+    p, button, a, input {
         font-size: 16px;
     }
 }
