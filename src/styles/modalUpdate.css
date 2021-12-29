@@ -34,6 +34,12 @@
     border: 2px solid rgba(197, 233, 255, 0.72);
     margin-left: 12px;
 }
+.modal-btn-save:disabled{
+    background: #CCCCCC;
+    border: 2px solid rgba(0,0,0,0.2);
+    color: rgba(0, 0 , 0, 0.5);
+    cursor: auto;
+}
 .modal-btn-close{
     border: 2px solid rgba(0, 0, 0, 0.2);
 }

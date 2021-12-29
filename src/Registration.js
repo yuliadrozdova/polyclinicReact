@@ -5,11 +5,8 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Modal from "react-modal";
 
-
 function Registration() {
     let navigate = useNavigate();
-    console.log('LOOG', navigate);
-
 
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
@@ -33,7 +30,6 @@ function Registration() {
     const loginHandleChange = (e) => {
         const loginValue = e.target.value;
         setLoginValue(loginValue);
-        console.log(loginValue);
 
         if (loginValue === ''){
             setLoginDirty(true);
@@ -50,7 +46,6 @@ function Registration() {
     const passwordHandleChange = (e) => {
         const passwordValue = e.target.value;
         setPasswordValue(passwordValue);
-        console.log(passwordValue);
 
         if (passwordValue === ''){
             setPasswordDirty(true);
@@ -76,7 +71,6 @@ function Registration() {
     const passwordRepeatHandleChange = (e) => {
         const passwordRepeatValue = e.target.value;
         setPasswordRepeatValue(passwordRepeatValue);
-        console.log(passwordRepeatValue);
 
         if (passwordRepeatValue === ''){
             setPasswordRepeatDirty(true);
@@ -86,11 +80,8 @@ function Registration() {
         }
     }
 
-
-
     const handleClick = async () => {
         if (loginDirty === false && passwordDirty === false && passwordRepeatDirty === false){
-            console.log('YES')
             await axios.post('http://localhost:4000/createUser', {
                 login: loginValue,
                 password: passwordValue
@@ -98,12 +89,10 @@ function Registration() {
                 setLoginValue('');
                 setPasswordValue('');
                 setPasswordRepeatValue('');
-                console.log('111 ' + res.data.data);
 
                 navigate("/Tricks");
             }).catch(error => {
                 setShowModalError(true);
-                console.log(error.response.status)
             } );
         }else {
             console.log('NO')
@@ -123,7 +112,6 @@ function Registration() {
 
     useEffect( async() =>{
         if (!loginDirty && !passwordDirty && !passwordRepeatDirty){
-            console.log('enabled')
             setDisabledBtn('')
         }else{
             setDisabledBtn('disabled');
@@ -153,7 +141,7 @@ function Registration() {
                   {(passwordRepeatDirty && passwordRepeatError) && <div style={{color: 'red'}}>{passwordRepeatError}</div>}
 
                  <button onClick={handleClick} disabled={disabledBtn}>Зарегистрироваться</button>
-                 <a href="/authorization">Авторизоваться</a>
+                 <a href="/">Авторизоваться</a>
 
               </div>
           </div>

@@ -7,7 +7,6 @@ import Modal from "react-modal";
 
 function Authorization() {
     let navigate = useNavigate();
-    console.log('LOOG', navigate);
 
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
@@ -78,17 +77,14 @@ function Authorization() {
                     navigate("/Tricks");
                 }).catch(error => {
                     setShowModalError(true);
-                    console.log(error.response.status)
                 } );
             }else {
                 console.log('error login')
             }
         }
 
-
     useEffect( async() =>{
         if (loginDirty === false && passwordDirty === false){
-            console.log('enabled')
             setDisabledBtn('')
         }else{
             setDisabledBtn('disabled');

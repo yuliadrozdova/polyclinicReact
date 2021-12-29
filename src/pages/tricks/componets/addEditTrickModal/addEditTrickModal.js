@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import axios from "axios";
 
 const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
+    const [disabledBtn, setDisabledBtn] = useState('disabled');
     const [values, setValues] = useState({ ...item });
 
     useEffect(() => {                                                  //проверяет обновление item
@@ -15,15 +16,34 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
         const field = id.replace('modal-', '')
         setValues({ ...values, [field]: value });
     }
+    let nowYear = new Date().getFullYear();
+    let nowMonth = new Date().getMonth() + 1;
+    let nowDate = new Date().getDate();
+    let fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
+
+    useEffect( async() =>{
+        if (values.namePatient !== '' && values.nameDoctor !== '-' && values.nameDoctor !== '' && values.date !== '' && fullNowDate <= values.date && values.textComplaints !== ''){
+            setDisabledBtn('')
+        }else{
+            setDisabledBtn('disabled');
+        }
+    }, [values.namePatient, values.nameDoctor, values.date, values.textComplaints]);
 
     const updateTrick = async () => {
+        if (values.namePatient !== '' &&
+            values.nameDoctor !== '-' &&
+            values.nameDoctor !=='' &&
+            values.date !== '' &&
+            fullNowDate <= values.date &&
+            values.textComplaints !== ''){
+            await axios.put('http://localhost:4000/updateTrick', {
+                values,                                                        //не правильно
+            }).then(res => {
+                newItem(values);
+                setValues('');
+            });
+        }
 
-        await axios.put('http://localhost:4000/updateTrick', {
-            values,                                                        //не правильно
-        }).then(res => {
-            newItem(values);
-            setValues('');
-        });
 
         await onClose(true);
     }
@@ -75,7 +95,7 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
 
                 <div className="modal-btn-footer">
                     <button className='modal-btn-close' onClick={onClose}>Cancel</button>
-                    <button className='modal-btn-save' onClick={() => updateTrick()}>Save</button>
+                    <button className='modal-btn-save' disabled={disabledBtn} onClick={updateTrick}>Save</button>
                 </div>
             </div>
 
