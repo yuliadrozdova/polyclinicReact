@@ -206,6 +206,7 @@ function Tricks() {
             console.log('222');
             newArray.forEach(value => {
                 if (value.date <= endDate ){
+
                     copy.push(value);
                 }
             })
@@ -215,6 +216,7 @@ function Tricks() {
             console.log('333');
             newArray.forEach(value => {
                 if (value.date >= startDate ){
+
                     copy.push(value);
                 }
             })
@@ -224,16 +226,29 @@ function Tricks() {
             console.log('444');
             newArray.forEach(value => {
                 if (value.date >= startDate && value.date <= endDate){
+
                     copy.push(value);
                 }
             })
             return setTricks(copy);
         }
 
+
+        // tricks.forEach(value => {
+        //     if (value.date > startDate && value.date < endDate){
+        //         copy.push(value);
+        //     }
+        // })
+        //
+        // return setTricks(copy);
+
+
+
     }
 
 
     console.log('LOOG', tricks);
+
 
     return (
         <div className="tricks-page">

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import polic from './images/polic.svg';
 import './styles/registration.css';
 import axios from "axios";
@@ -19,7 +19,7 @@ function Registration() {
     const [passwordRepeatDirty, setPasswordRepeatDirty] = useState(false);
     const [passwordRepeatError, setPasswordRepeatError] = useState('invalid');
 
-    let countError = 3;
+    // let countError = 3;
 
     const loginHandleChange = (e) => {
         const loginValue = e.target.value;
@@ -33,8 +33,9 @@ function Registration() {
             setLoginDirty(true);
             setLoginError('Логин должен содержать минимум 6 символов')
         } else {
-            setLoginError('')
-            countError -= countError;
+            setLoginError('');
+            setLoginDirty(false);
+            // countError -= countError;
         }
     }
 
@@ -59,8 +60,9 @@ function Registration() {
             setPasswordDirty(true);
             setPasswordError('Пароль не должен содержать пробелы')
         } else {
-            setPasswordError('')
-            countError -= countError;
+            setPasswordError('');
+            setPasswordDirty(false);
+            // countError = countError - 1;
         }
     }
 
@@ -72,27 +74,47 @@ function Registration() {
         if (passwordRepeatValue === ''){
             setPasswordRepeatDirty(true);
             setPasswordRepeatError('Поле не может быть пустым')
-        } else if(passwordRepeatValue !== passwordValue){
+        }else {
+            setPasswordRepeatDirty(false);
+        }
+
+    }
+
+
+    useEffect(() => {
+        if(passwordRepeatValue !== passwordValue){
             setPasswordRepeatDirty(true);
             setPasswordRepeatError('Введеные пароли не совпадают')
         } else {
             setPasswordRepeatError('')
-            countError -= countError;
+            setPasswordRepeatDirty(false);
+            // countError -= countError;
         }
-    }
 
+    },[passwordValue, passwordRepeatValue])
+
+    // console.log('countError ', countError);
     console.log('LOOG', 'RENDER');
 
     const handleClick = async () => {
-        await axios.post('http://localhost:4000/createUser', {
-            login: loginValue,
-            password: passwordValue
-        }).then(res => {
-            setLoginValue('');
-            setPasswordValue('');
-            setPasswordRepeatValue('');
-            console.log('111 ' + res.data.data);
-        });
+        if (loginDirty === false && passwordDirty === false && passwordRepeatDirty === false){
+            console.log('YES')
+
+            await axios.post('http://localhost:4000/createUser', {
+                login: loginValue,
+                password: passwordValue
+            }).then(res => {
+                setLoginValue('');
+                setPasswordValue('');
+                setPasswordRepeatValue('');
+                console.log('111 ' + res.data.data);
+                window.open('/tricks');
+               // window.location = '/tricks';
+            });
+        }else{
+            console.log('NO')
+        }
+
     }
 
 

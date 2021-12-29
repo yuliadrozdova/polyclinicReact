@@ -23,7 +23,7 @@ background: lightgray;
     flex-direction: column;
     padding-top: 40px;
 }
-.tricks-page input, button, select {
+.tricks-page input, .tricks-page button, .tricks-page select {
     width: 150px;
     margin-right: 10px;
     background-color: white;
