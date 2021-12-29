@@ -1,4 +1,9 @@
-
+.hidden {
+    display: none;
+}
+.visible {
+    display: block;
+}
 
 .recording-btn button:disabled {
     background: #CCCCCC;
@@ -39,7 +44,6 @@ input[type='date']{
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
-
 }
 .recording-btn{
     align-self: end;
@@ -83,22 +87,18 @@ input[type='date']{
     cursor: pointer;
 }
 
-
-
-
-
-
-
-
-.hidden {
-    display: none;
-}
-.visible {
-    display: block;
-}
-
-
 .sort, .filter{
     display: flex;
     justify-content: flex-end;
+}
+.filter-main-wrap{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+.filter-main-wrap > div {
+    align-self: center;
+}
+.filter > .text-trick-btn-delete{
+    align-self: center;
 }

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import edit from '../../images/edit.svg';
 import close from '../../images/delete.svg'
+import open_filter from '../../images/open_filter.svg'
 import '../../styles/tricks.css';
 import '../../styles/modalUpdate.css';
 import AddEditTrickModal from "./componets/addEditTrickModal/addEditTrickModal";
@@ -30,6 +31,7 @@ function Tricks() {
 
     const [classSort, setClassSort] = useState('hidden');
     const [classFilter, setClassFilter] = useState('hidden');
+    const [classFilterMain, setClassFilterMain] = useState('visible');
 
     useEffect( async() =>{
         await axios.get('http://localhost:4000/allTricks').then(res => {
@@ -44,7 +46,7 @@ function Tricks() {
 
 
     useEffect( async() =>{
-        if (namePatient !== '' && nameDoctor !== '' && date !== '' && textComplaints !== ''){
+        if (namePatient !== '' && nameDoctor !== '-' && nameDoctor !== '' && date !== '' && fullNowDate <= date && textComplaints !== ''){
             console.log('enabled')
             setDisabledBtn('')
         }else{
@@ -53,23 +55,23 @@ function Tricks() {
     }, [namePatient, nameDoctor, date, textComplaints]);
 
 
+    const now = new Date();
+    let nowYear = now.getFullYear();
+    let nowMonth = now.getMonth() + 1; //+1
+    let nowDate = now.getDate();
+
+    let fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
+    console.log('fullNowDate ', fullNowDate);
 
 
     const createNewTrick = async () => {
-         let currentDate = await new Date().toLocaleDateString().replaceAll('/', '-');
 
-         if (date > currentDate){
-             console.log('> ', currentDate);
-         } else if (date < currentDate){
-             console.log('< ', currentDate);
-         }
-
-
-        console.log('currentDate ', currentDate);
-        console.log('date ', date);
-
-
-        if (namePatient !== '' && nameDoctor !== '' && date !== '' && currentDate <= date && textComplaints !== ''){
+        if (namePatient !== '' &&
+            nameDoctor !== '-' &&
+            nameDoctor !=='' &&
+            date !== '' &&
+            fullNowDate <= date &&
+            textComplaints !== ''){
             axios.post('http://localhost:4000/createTrick', {
                 namePatient,
                 nameDoctor,
@@ -138,17 +140,11 @@ function Tricks() {
 
 
     useEffect(() => {                       //sort
-
-        setClassSort('hidden');
         const copy = tricks.map(value => value);
-
-
-        console.log(121212, sortTricks);
 
         switch(sortTricks) {
 
             case 'none':
-                setClassSort('hidden');
                 axios.get('http://localhost:4000/allTricks').then(res => {
                     let arr = res.data.data;
                     arr.forEach(val => {
@@ -156,10 +152,10 @@ function Tricks() {
                     })
                     return  setTricks(arr);
                 });
+                return setClassSort('hidden');
 
             case 'name':
                 setClassSort('visible');
-
                 switch(sortDirect) {
                     case 'asc':
                         copy.sort((a,b) => a.namePatient.localeCompare(b.namePatient));
@@ -198,6 +194,25 @@ function Tricks() {
     },[sortTricks, sortDirect])
 
 
+
+    const openFilter = () => {
+        setClassFilter('visible');
+        setClassFilterMain('hidden');
+    }
+    const closeFilter = async () => {
+        setClassFilter('hidden');
+        setClassFilterMain('visible');
+
+        await axios.get('http://localhost:4000/allTricks').then(res => {
+            let arr = res.data.data;
+            arr.forEach(val => {
+                val.date = val.date.substring(0,10);
+            })
+            setTricks(arr);
+        });
+    }
+
+
     const filterTricks = async (startDate, endDate) => {
         console.log('start ', startDate);
         let newArray = [];
@@ -211,7 +226,6 @@ function Tricks() {
             })
             console.log('newArray2 ', newArray);
         });
-
 
         console.log('end ', endDate);
         console.log('newArray ', newArray);
@@ -267,14 +281,6 @@ function Tricks() {
 
         <div className="tricks-page">
             <main>
-
-                {/*<div className={abc}>*/}
-                {/*    <div>HELLO!!!</div>*/}
-
-                {/*    <button onClick={click}>click</button>*/}
-                {/*</div>*/}
-
-
                 <div className="recording-wrapper">
                     <div className="patient-name">
                         <p>Имя:</p>
@@ -313,7 +319,7 @@ function Tricks() {
                     </div>
 
                     <div className="recording-btn">
-                        <button disabled={disabledBtn} onClick={() => createNewTrick()}>Добавить</button>
+                        <button disabled={disabledBtn} onClick={createNewTrick}>Добавить</button>
                     </div>
                 </div>
 
@@ -337,7 +343,7 @@ function Tricks() {
                                 <select name="sort-list"
                                         value={sortTricks}
                                         onChange={(e) => setSortTricks(e.target.value)}>
-                                    <option value="none">-</option>
+                                    <option value="none"></option>
                                     <option value="name">Имя</option>
                                     <option value="doctor">Врач</option>
                                     <option value="date">Дата</option>
@@ -360,32 +366,58 @@ function Tricks() {
 
                     {/*********************/}
 
-                    <div className="filter">
-                        <div className="filter-wrap">
-                            <div className="start-filter-input">
-                                <div className="date">
-                                    <p>с:</p>
-                                    <input type="date"
-                                           value={startFilterTricks}
-                                           onChange={(e) => setStartFilter(e.target.value)}
-                                           required/>
-                                </div>
+                    
+                    <div className="filter-main">
+                        
+                        <div className={classFilterMain}>
+                            <div className="filter-main-wrap">
+                                <div>Добавить фильтр по дате:</div>
+                                <img className="open-filter-image" src={open_filter}
+                                     onClick={openFilter}/>
                             </div>
                         </div>
 
-                        <div className="end-filter">
-                            <div className="end-filter-input">
-                                <div className="date">
-                                    <p>по:</p>
-                                    <input type="date"
-                                           value={endFilterTricks}
-                                           onChange={(e) => setEndFilter(e.target.value)}
-                                           required/>
+
+
+
+
+
+
+
+
+                            <div className={classFilter}>
+                                <div className="filter">
+                                <div className="filter-wrap">
+                                    <div className="start-filter-input">
+                                        <div className="date">
+                                            <p>с:</p>
+                                            <input type="date"
+                                                   value={startFilterTricks}
+                                                   onChange={(e) => setStartFilter(e.target.value)}
+                                                   required/>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <div className="end-filter">
+                                    <div className="end-filter-input">
+                                        <div className="date">
+                                            <p>по:</p>
+                                            <input type="date"
+                                                   value={endFilterTricks}
+                                                   onChange={(e) => setEndFilter(e.target.value)}
+                                                   required/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button  onClick={() => filterTricks(startFilterTricks, endFilterTricks)}>Фильтровать</button>
+                                <img className="text-trick-btn-delete" src={close}
+                                     onClick={closeFilter}/>
                             </div>
                         </div>
-                        <button  onClick={() => filterTricks(startFilterTricks, endFilterTricks)}>Фильтровать</button>
+
                     </div>
+                    
 
 
 
