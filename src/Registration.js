@@ -3,6 +3,7 @@ import polic from './images/polic.svg';
 import './styles/registration.css';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import Modal from "react-modal";
 
 
 function Registration() {
@@ -23,7 +24,12 @@ function Registration() {
     const [passwordRepeatDirty, setPasswordRepeatDirty] = useState(false);
     const [passwordRepeatError, setPasswordRepeatError] = useState('invalid');
 
+    const [disabledBtn, setDisabledBtn] = useState('disabled');
+    const [showModalError, setShowModalError] = useState(false);
 
+    const onClose = () => {
+        setShowModalError(false)
+    }
     const loginHandleChange = (e) => {
         const loginValue = e.target.value;
         setLoginValue(loginValue);
@@ -80,6 +86,30 @@ function Registration() {
         }
     }
 
+
+
+    const handleClick = async () => {
+        if (loginDirty === false && passwordDirty === false && passwordRepeatDirty === false){
+            console.log('YES')
+            await axios.post('http://localhost:4000/createUser', {
+                login: loginValue,
+                password: passwordValue
+            }).then(res => {
+                setLoginValue('');
+                setPasswordValue('');
+                setPasswordRepeatValue('');
+                console.log('111 ' + res.data.data);
+
+                navigate("/Tricks");
+            }).catch(error => {
+                setShowModalError(true);
+                console.log(error.response.status)
+            } );
+        }else {
+            console.log('NO')
+        }
+    }
+
     useEffect(() => {
         if(passwordRepeatValue !== passwordValue){
             setPasswordRepeatDirty(true);
@@ -91,36 +121,23 @@ function Registration() {
 
     },[passwordValue, passwordRepeatValue])
 
-    console.log('LOOG', 'RENDER');
-
-    const handleClick = async () => {
-        if (loginDirty === false && passwordDirty === false && passwordRepeatDirty === false){
-            console.log('YES')
-
-            await axios.post('http://localhost:4000/createUser', {
-                login: loginValue,
-                password: passwordValue
-            }).then(res => {
-                setLoginValue('');
-                setPasswordValue('');
-                setPasswordRepeatValue('');
-                console.log('111 ' + res.data.data);
-
-                navigate("/Tricks");
-            });
+    useEffect( async() =>{
+        if (!loginDirty && !passwordDirty && !passwordRepeatDirty){
+            console.log('enabled')
+            setDisabledBtn('')
         }else{
-            console.log('NO')
+            setDisabledBtn('disabled');
         }
+    }, [loginDirty, passwordDirty, passwordRepeatDirty]);
 
-    }
-
+    console.log('LOOG', 'RENDER');
 
   return (
 <div className="registration-page">
       <main>
           <div className="col-left"><img src={polic} className="polic-img" alt="polic"/></div>
           <div className="col-right">
-              <form>
+              <div className='form'>
                   <h2>Регистрация</h2>
 
                   <p>Login:</p>
@@ -135,12 +152,23 @@ function Registration() {
                   <input id="passwordRepeat" value={passwordRepeatValue} onChange={passwordRepeatHandleChange} type="password" placeholder="Password" required />
                   {(passwordRepeatDirty && passwordRepeatError) && <div style={{color: 'red'}}>{passwordRepeatError}</div>}
 
-                 <button onClick={() => handleClick()}>Зарегистрироваться</button>
+                 <button onClick={handleClick} disabled={disabledBtn}>Зарегистрироваться</button>
                  <a href="/authorization">Авторизоваться</a>
 
-              </form>
+              </div>
           </div>
       </main>
+
+    <Modal className="modal-update" isOpen={showModalError} contentLabel="Example Modal" onRequestClose={onClose}
+           shouldCloseOnOverlayClick={true}>
+        <div className="modal-header">Ошибка регистрации</div>
+        <div className="modal-delete-text">Попробуйте ввести данные еще раз</div>
+
+        <div className="modal-btn-footer">
+            <button className='modal-btn-close' onClick={onClose}>Cancel</button>
+        </div>
+    </Modal>
+
 </div>
   );
 }

@@ -123,11 +123,10 @@ function Authorization() {
     <Modal className="modal-update" isOpen={showModalError} contentLabel="Example Modal" onRequestClose={onClose}
            shouldCloseOnOverlayClick={true}>
         <div className="modal-header">Ошибка аутентификации</div>
-        <div className="modal-delete-text">Данный пользователь не был найден. Попробуйте выести данные еще раз</div>
+        <div className="modal-delete-text">Данный пользователь не был найден. Попробуйте ввести данные еще раз</div>
 
         <div className="modal-btn-footer">
             <button className='modal-btn-close' onClick={onClose}>Cancel</button>
-            {/*<button className='modal-btn-save' onClick={() => deleteTrick(item)}>Delete</button>*/}
         </div>
     </Modal>
 
