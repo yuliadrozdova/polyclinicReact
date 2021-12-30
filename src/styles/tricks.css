@@ -31,6 +31,7 @@
     display: flex;
     flex-direction: column;
     padding-top: 40px;
+    padding-bottom: 100px;
 }
 .tricks-page input, .tricks-page button, .tricks-page select {
     width: 150px;
