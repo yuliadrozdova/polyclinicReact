@@ -12,6 +12,8 @@ const FilterTricks = ({setTricks}) => {
     const [classFilter, setClassFilter] = useState('hidden');
     const [classFilterMain, setClassFilterMain] = useState('visible');
 
+    const [loading, setLoading] = useState(false);
+
     const openFilter = () => {
         setClassFilter('visible');
         setClassFilterMain('hidden');
@@ -31,6 +33,8 @@ const FilterTricks = ({setTricks}) => {
     }
 
     const filterTricks = async (startDate, endDate) => {
+        await setLoading(true);
+
         let newArray = [];
         const copy = [];
 
@@ -42,37 +46,42 @@ const FilterTricks = ({setTricks}) => {
         });
 
         if (startDate === '' && endDate  === ''){
-            return  setTricks(newArray);
+           await setTricks(newArray);
 
         } else if (startDate === '' && endDate !== ''){
-            newArray.forEach(value => {
+            await newArray.forEach(value => {
                 if (value.date <= endDate ){
 
                     copy.push(value);
                 }
             })
-            return setTricks(copy);
+            await setTricks(copy);
 
         } else if (startDate !== '' && endDate === ''){
-            newArray.forEach(value => {
+            await newArray.forEach(value => {
                 if (value.date >= startDate ){
                     copy.push(value);
                 }
             })
-            return setTricks(copy);
+            await setTricks(copy);
 
         } else if (startDate !== '' && endDate !== ''){
-            newArray.forEach(value => {
+            await newArray.forEach(value => {
                 if (value.date >= startDate && value.date <= endDate){
                     copy.push(value);
                 }
             })
-            return setTricks(copy);
+            await setTricks(copy);
         }
+        await setLoading(false);
     }
 
     return (
+
         <div className="filter-main">
+            {loading && <div className="backgroundLoading">
+                <div className="loading"></div>
+            </div>}
 
             <div className={classFilterMain}>
                 <div className="filter-main-wrap">

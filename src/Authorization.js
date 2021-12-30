@@ -20,6 +20,8 @@ function Authorization() {
     const [showModalError, setShowModalError] = useState(false);
     const [disabledBtn, setDisabledBtn] = useState('disabled');
 
+    const [loading, setLoading] = useState(false);
+
     const onClose = () => {
         setShowModalError(false)
     }
@@ -66,6 +68,8 @@ function Authorization() {
     }
 
     const loginClick = async () => {
+        await setLoading(true);
+
             if (loginDirty === false && passwordDirty === false) {
                 await axios.post('http://localhost:4000/loginUser', {
                     login: loginValue,
@@ -81,7 +85,15 @@ function Authorization() {
             }else {
                 console.log('error login')
             }
-        }
+
+        await setLoading(false);
+    }
+
+    const registrationLink = async () => {
+        await setLoading(true);
+        await navigate("/registration");
+        await setLoading(false);
+    }
 
     useEffect( async() =>{
         if (loginDirty === false && passwordDirty === false){
@@ -95,6 +107,10 @@ function Authorization() {
 
     return (
 <div className="authorization-page">
+    {loading && <div className="backgroundLoading">
+        <div className="loading"></div>
+    </div>}
+
       <main>
           <div className="col-left"><img src={polic} className="polic-img" alt="polic"/></div>
           <div className="col-right">
@@ -110,7 +126,7 @@ function Authorization() {
                   {(passwordDirty && passwordError) && <div style={{color: 'red'}}>{passwordError}</div>}
 
                   <button onClick={loginClick} disabled={disabledBtn}>Войти</button>
-                  <a href="/registration">Зарегистрироваться</a>
+                  <button className="link" onClick={registrationLink}>Зарегистрироваться</button>
 
               </div>
           </div>

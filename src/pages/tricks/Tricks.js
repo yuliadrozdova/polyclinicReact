@@ -23,6 +23,7 @@ function Tricks() {
     const [indexModal, setIndexModal] = useState('');
 
     const [disabledBtn, setDisabledBtn] = useState('disabled');
+    const [loading, setLoading] = useState(false);
 
     let nowYear = new Date().getFullYear();
     let nowMonth = new Date().getMonth() + 1;
@@ -30,6 +31,7 @@ function Tricks() {
     let fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
 
     useEffect( async() =>{
+        await setLoading(true);
         await axios.get('http://localhost:4000/allTricks').then(res => {
             let arr = res.data.data;
             arr.forEach(val => {
@@ -37,9 +39,10 @@ function Tricks() {
             })
             setTricks(arr);
         });
+        await setLoading(false);
     }, []);
 
-    useEffect( async() =>{
+    useEffect(   () =>{        //disabled button with create trick
         if (namePatient !== '' && nameDoctor !== '-' && nameDoctor !== '' && date !== '' && fullNowDate <= date && textComplaints !== ''){
             setDisabledBtn('')
         }else{
@@ -48,13 +51,15 @@ function Tricks() {
     }, [namePatient, nameDoctor, date, textComplaints]);
 
     const createNewTrick = async () => {
+        await setLoading(true);
+
         if (namePatient !== '' &&
             nameDoctor !== '-' &&
             nameDoctor !=='' &&
             date !== '' &&
             fullNowDate <= date &&
             textComplaints !== ''){
-            axios.post('http://localhost:4000/createTrick', {
+            await axios.post('http://localhost:4000/createTrick', {
                 namePatient,
                 nameDoctor,
                 date,
@@ -73,6 +78,7 @@ function Tricks() {
                 setTricks(copy);
             });
         }
+        await setLoading(false);
     }
 
     const editTrick = (item) => {
@@ -130,8 +136,10 @@ function Tricks() {
     console.log('LOOG', tricks);
 
     return (
-
         <div className="tricks-page">
+            {loading && <div className="backgroundLoading">
+                <div className="loading"></div>
+            </div>}
             <main>
                 <div className="recording-wrapper">
                     <div className="patient-name">
@@ -149,6 +157,8 @@ function Tricks() {
                                 value={nameDoctor}
                                 onChange={(e) => setNameDoctor(e.target.value)}>
                             <option>-</option>
+                            <option value="Алиев Мурат Бесланович">Алиев Мурат Бесланович</option>
+                            <option value="Воронова Алиса Геннадьевна">Воронова Алиса Геннадьевна</option>
                             <option value="Иванов Алексей Николаевич">Иванов Алексей Николаевич</option>
                             <option value="Остапова Валентина Александровна">Остапова Валентина Александровна</option>
                         </select>

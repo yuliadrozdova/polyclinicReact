@@ -6,6 +6,7 @@ import axios from "axios";
 const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
     const [disabledBtn, setDisabledBtn] = useState('disabled');
     const [values, setValues] = useState({ ...item });
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {                                                  //проверяет обновление item
         setValues({ ...item });
@@ -30,6 +31,8 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
     }, [values.namePatient, values.nameDoctor, values.date, values.textComplaints]);
 
     const updateTrick = async () => {
+        await setLoading(true);
+
         if (values.namePatient !== '' &&
             values.nameDoctor !== '-' &&
             values.nameDoctor !=='' &&
@@ -43,14 +46,17 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
                 setValues('');
             });
         }
-
-
+        await setLoading(false);
         await onClose(true);
     }
 
     return (
         <Modal className="modal-update" isOpen={isOpen} contentLabel="Example Modal" onRequestClose={onClose}
                shouldCloseOnOverlayClick={true}>
+            {loading && <div className="backgroundLoading">
+                <div className="loading"></div>
+            </div>}
+
             <div className="modal-header">Изменить прием</div>
 
             <div className="modal-wrapper">
@@ -70,6 +76,8 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
                             value={values.nameDoctor}
                             onChange={updateInput}>
                         <option>-</option>
+                        <option value="Алиев Мурат Бесланович">Алиев Мурат Бесланович</option>
+                        <option value="Воронова Алиса Геннадьевна">Воронова Алиса Геннадьевна</option>
                         <option value="Иванов Алексей Николаевич">Иванов Алексей Николаевич</option>
                         <option value="Остапова Валентина Александровна">Остапова Валентина Александровна</option>
                     </select>
