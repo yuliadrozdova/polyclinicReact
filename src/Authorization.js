@@ -11,11 +11,11 @@ function Authorization() {
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
 
-    const [loginDirty, setLoginDirty] = useState(false);
-    const [loginError, setLoginError] = useState('invalid');
+    const [loginDirty, setLoginDirty] = useState(true);
+    const [loginError, setLoginError] = useState('Введите данные');
 
-    const [passwordDirty, setPasswordDirty] = useState(false);
-    const [passwordError, setPasswordError] = useState('invalid');
+    const [passwordDirty, setPasswordDirty] = useState(true);
+    const [passwordError, setPasswordError] = useState('Введите данные');
 
     const [showModalError, setShowModalError] = useState(false);
     const [disabledBtn, setDisabledBtn] = useState('disabled');
@@ -78,6 +78,10 @@ function Authorization() {
                     login: loginValue,
                     password: passwordValue
                 }).then(res => {
+                    //console.log('res ', res.data.token)
+
+                    localStorage.setItem('token', res.data.token);
+                    //console.log(localStorage.getItem('token'));
                     setLoginValue('');
                     setPasswordValue('');
 

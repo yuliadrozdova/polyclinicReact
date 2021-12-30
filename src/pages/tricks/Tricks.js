@@ -30,9 +30,12 @@ function Tricks() {
     let nowDate = new Date().getDate();
     let fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
 
+    const token = localStorage.getItem('token');
+
     useEffect( async() =>{
         await setLoading(true);
-        await axios.get('http://localhost:4000/allTricks').then(res => {
+
+        await axios.get('http://localhost:4000/allTricks/', { headers: { Authorization: `${token}` } }).then(res => {
             let arr = res.data.data;
             arr.forEach(val => {
                 val.date = val.date.substring(0,10);
@@ -60,6 +63,7 @@ function Tricks() {
             fullNowDate <= date &&
             textComplaints !== ''){
             await axios.post('http://localhost:4000/createTrick', {
+                headers: { Authorization: `${token}` },
                 namePatient,
                 nameDoctor,
                 date,

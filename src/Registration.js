@@ -12,14 +12,14 @@ function Registration() {
     const [passwordValue, setPasswordValue] = useState('');
     const [passwordRepeatValue, setPasswordRepeatValue] = useState('');
 
-    const [loginDirty, setLoginDirty] = useState(false);
-    const [loginError, setLoginError] = useState('invalid');
+    const [loginDirty, setLoginDirty] = useState(true);
+    const [loginError, setLoginError] = useState('Введите данные');
 
-    const [passwordDirty, setPasswordDirty] = useState(false);
-    const [passwordError, setPasswordError] = useState('invalid');
+    const [passwordDirty, setPasswordDirty] = useState(true);
+    const [passwordError, setPasswordError] = useState('Введите данные');
 
-    const [passwordRepeatDirty, setPasswordRepeatDirty] = useState(false);
-    const [passwordRepeatError, setPasswordRepeatError] = useState('invalid');
+    const [passwordRepeatDirty, setPasswordRepeatDirty] = useState(true);
+    const [passwordRepeatError, setPasswordRepeatError] = useState('Введите данные');
 
     const [disabledBtn, setDisabledBtn] = useState('disabled');
     const [showModalError, setShowModalError] = useState(false);
