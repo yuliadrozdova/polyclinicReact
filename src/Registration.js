@@ -57,6 +57,9 @@ function Registration() {
         } else if(!/[A-Za-z]/g.test(passwordValue)){ //допустить только латинские буквы
             setPasswordDirty(true);
             setPasswordError('Пароль должен содержать хотя бы одну букву')
+        }else if(/[А-Яа-яЁё]/g.test(passwordValue)){ //допустить только латинские буквы
+            setPasswordDirty(true);
+            setPasswordError('Используйте только латинские буквы')
         } else if(!/[?=.*\d]/g.test(passwordValue)){
             setPasswordDirty(true);
             setPasswordError('Пароль должен содержать хотя бы одну цифру')
