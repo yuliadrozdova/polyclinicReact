@@ -192,6 +192,13 @@ function Tricks() {
                     <FilterTricks setTricks={filterTricks}/>
 
                 <div className='tricks-list-wrap'>
+                    <div className="trick-wrap bold">
+                        <div className="text-trick-patient">Имя</div>
+                        <div className="text-trick-doctor">Врач</div>
+                        <div className="text-trick-date">Дата</div>
+                        <div className="text-trick-complaints">Жалобы</div>
+                    </div>
+
                     {tricks.map((trick, index) =>
                         <div className="trick-wrap" key={`trick-${index}`}>
                             <div className="text-trick-patient">{trick.namePatient}</div>

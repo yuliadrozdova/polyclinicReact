@@ -4,6 +4,13 @@
 .visible {
     display: block;
 }
+.bold{
+    background: #CCCCCC;
+    font-size: 18px;
+}
+.bold div{
+    margin: 15px;
+}
 
 .recording-btn button:disabled {
     background: #CCCCCC;
