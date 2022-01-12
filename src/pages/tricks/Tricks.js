@@ -28,7 +28,13 @@ function Tricks() {
     let nowYear = new Date().getFullYear();
     let nowMonth = new Date().getMonth() + 1;
     let nowDate = new Date().getDate();
-    let fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
+    let fullNowDate = '';
+    if (nowMonth<=9){
+        fullNowDate = nowYear + '-' + '0' + nowMonth + '-' + nowDate;
+    }else{
+        fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
+    }
+
 
     const token = localStorage.getItem('token');
 
@@ -46,12 +52,16 @@ function Tricks() {
     }, []);
 
     useEffect(   () =>{        //disabled button with create trick
+       console.log('1111 ', date);
+
         if (namePatient !== '' && nameDoctor !== '-' && nameDoctor !== '' && date !== '' && fullNowDate <= date && textComplaints !== ''){
+            console.log('!!! ', namePatient);
             setDisabledBtn('')
         }else{
             setDisabledBtn('disabled');
         }
     }, [namePatient, nameDoctor, date, textComplaints]);
+
 
     const createNewTrick = async () => {
         await setLoading(true);
@@ -63,12 +73,11 @@ function Tricks() {
             fullNowDate <= date &&
             textComplaints !== ''){
             await axios.post('http://localhost:4000/createTrick', {
-                headers: { Authorization: `${token}` },
                 namePatient,
                 nameDoctor,
                 date,
                 textComplaints
-            }).then(res => {
+            }, { headers: { Authorization: `${token}` }}).then(res => {
                 setNamePatient('');
                 setNameDoctor('');
                 setDate('');
