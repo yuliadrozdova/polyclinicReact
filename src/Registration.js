@@ -172,7 +172,7 @@ function Registration() {
         <div className="modal-delete-text">Пользователь с таким логином уже существует. Попробуйте ввести данные еще раз</div>
 
         <div className="modal-btn-footer">
-            <button className='modal-btn-close' onClick={onClose}>Cancel</button>
+            <button className='modal-btn-close' onClick={onClose}>Close</button>
         </div>
     </Modal>
 

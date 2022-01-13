@@ -1,9 +1,3 @@
-.hidden {
-    display: none;
-}
-.visible {
-    display: block;
-}
 .bold{
     background: #CCCCCC;
     font-size: 18px;

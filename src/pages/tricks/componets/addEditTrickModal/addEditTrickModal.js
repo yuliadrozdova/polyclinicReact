@@ -28,9 +28,10 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
     }else{
         fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
     }
+    let fullMaxDate="2022-12-31"
 
     useEffect( async() =>{
-        if (values.namePatient !== '' && values.nameDoctor !== '-' && values.nameDoctor !== '' && values.date !== '' && fullNowDate <= values.date && values.textComplaints !== ''){
+        if (values.namePatient !== '' && values.nameDoctor !== '-' && values.nameDoctor !== '' && values.date !== '' && fullNowDate <= values.date  && values.date <= fullMaxDate && values.textComplaints !== ''){
             setDisabledBtn('')
         }else{
             setDisabledBtn('disabled');
@@ -45,6 +46,7 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
             values.nameDoctor !=='' &&
             values.date !== '' &&
             fullNowDate <= values.date &&
+            values.date <= fullMaxDate &&
             values.textComplaints !== ''){
             await axios.put('http://localhost:4000/updateTrick', {
                 values

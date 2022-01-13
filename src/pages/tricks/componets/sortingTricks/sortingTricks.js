@@ -6,9 +6,7 @@ const SortingTricks = ({tricks, setTricks}) => {
 
     const [sortTricks, setSortTricks] = useState('none');
     const [sortDirect, setSortDirect] = useState('asc');
-
     const [classSort, setClassSort] = useState('hidden');
-   // localStorage.removeItem('token');
     const token = localStorage.getItem('token');
 
     useEffect(() => {                       //sort

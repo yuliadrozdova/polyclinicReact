@@ -11,7 +11,7 @@ import SortingTricks from "./componets/sortingTricks/sortingTricks";
 import FilterTricks from "./componets/filterTricks/filterTricks";
 
 function Tricks() {
-    let navigate = useNavigate();
+    // let navigate = useNavigate();
 
     const [tricks, setTricks] = useState([]);
     const [namePatient, setNamePatient] = useState('');
@@ -37,6 +37,7 @@ function Tricks() {
     }else{
         fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
     }
+    let fullMaxDate="2022-12-31"
 
     const token = localStorage.getItem('token');
 
@@ -56,7 +57,7 @@ function Tricks() {
     useEffect(   () =>{        //disabled button with create trick
        console.log('1111 ', date);
 
-        if (namePatient !== '' && nameDoctor !== '-' && nameDoctor !== '' && date !== '' && fullNowDate <= date && textComplaints !== ''){
+        if (namePatient !== '' && nameDoctor !== '-' && nameDoctor !== '' && date !== '' && fullNowDate <= date && date <= fullMaxDate && textComplaints !== ''){
             console.log('!!! ', namePatient);
             setDisabledBtn('')
         }else{
@@ -67,12 +68,16 @@ function Tricks() {
 
     const createNewTrick = async () => {
         await setLoading(true);
+        // setNamePatient(namePatient.trim());
+        // setTextComplaints(textComplaints.trim());
+        // console.log('setNamePatient(namePatient.trim()) ', namePatient.trim());
 
         if (namePatient !== '' &&
             nameDoctor !== '-' &&
             nameDoctor !=='' &&
             date !== '' &&
             fullNowDate <= date &&
+            date <= fullMaxDate &&
             textComplaints !== ''){
             await axios.post('http://localhost:4000/createTrick', {
                 namePatient,
@@ -148,15 +153,15 @@ function Tricks() {
         setTricks(arr);
     }
 
-    const exitAccountClick = async () => {
-        if(localStorage.getItem('token')){
-            localStorage.removeItem('token');
-        }
-
-        await setLoading(true);
-        await navigate("/");
-        await setLoading(false);
-    }
+    // const exitAccountClick = async () => {
+    //     if(localStorage.getItem('token')){
+    //         localStorage.removeItem('token');
+    //     }
+    //
+    //     await setLoading(true);
+    //     await navigate("/");
+    //     await setLoading(false);
+    // }
 
     console.log('LOOG', tricks);
 
@@ -165,9 +170,9 @@ function Tricks() {
             {loading && <div className="backgroundLoading">
                 <div className="loading"></div>
             </div>}
-            <div className="exit-btn">
-                <button className='exitAccount' onClick={exitAccountClick}>Выход</button>
-            </div>
+            {/*<div className="exit-btn">*/}
+            {/*    <button className='exitAccount' onClick={exitAccountClick}>Выход</button>*/}
+            {/*</div>*/}
 
             <main>
                 <div className="recording-wrapper">
@@ -196,6 +201,7 @@ function Tricks() {
                     <div className="date">
                         <p>Дата:</p>
                         <input type="date"
+                               max="2022-12-31"
                                value={date}
                                onChange={(e) => setDate(e.target.value)}
                                required/>

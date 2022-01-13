@@ -10,16 +10,12 @@ function Authorization() {
 
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
-
     const [loginDirty, setLoginDirty] = useState(true);
-    const [loginError, setLoginError] = useState('Введите данные');
-
+    const [loginError, setLoginError] = useState('');
     const [passwordDirty, setPasswordDirty] = useState(true);
-    const [passwordError, setPasswordError] = useState('Введите данные');
-
+    const [passwordError, setPasswordError] = useState('');
     const [showModalError, setShowModalError] = useState(false);
     const [disabledBtn, setDisabledBtn] = useState('disabled');
-
     const [loading, setLoading] = useState(false);
 
     const onClose = () => {
@@ -28,6 +24,7 @@ function Authorization() {
 
     const loginHandleChange = (e) => {
         const loginValue = e.target.value;
+        console.log(loginValue);
         setLoginValue(loginValue);
 
         if (loginValue === ''){
@@ -72,6 +69,10 @@ function Authorization() {
 
     const loginClick = async () => {
         await setLoading(true);
+        // console.log('loginValue ', loginValue);
+        // await setLoginValue(loginValue.trim());
+        // passwordValue.trim();
+        // await console.log('loginValue.trim() ', loginValue);
 
             if (loginDirty === false && passwordDirty === false) {
                 await axios.post('http://localhost:4000/loginUser', {
@@ -147,7 +148,7 @@ function Authorization() {
         <div className="modal-delete-text">Данный пользователь не был найден. Попробуйте ввести данные еще раз</div>
 
         <div className="modal-btn-footer">
-            <button className='modal-btn-close' onClick={onClose}>Cancel</button>
+            <button className='modal-btn-close' onClick={onClose}>Close</button>
         </div>
     </Modal>
 
