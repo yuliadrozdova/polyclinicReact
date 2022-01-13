@@ -11,7 +11,16 @@
 .bold div{
     margin: 15px;
 }
-
+.exit-btn{
+    width: 100%;
+}
+.exit-btn > button{
+    position: absolute;
+    right: 30px;
+    top: 36px;
+    font-size: 24px;
+    max-height: 45px;
+}
 .recording-btn button:disabled {
     background: #CCCCCC;
     color: rgba(0, 0 , 0, 0.5);

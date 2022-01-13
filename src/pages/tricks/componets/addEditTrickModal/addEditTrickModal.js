@@ -86,7 +86,7 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
                         <option value="Алиев Мурат Бесланович">Алиев Мурат Бесланович</option>
                         <option value="Воронова Алиса Геннадьевна">Воронова Алиса Геннадьевна</option>
                         <option value="Иванов Алексей Николаевич">Иванов Алексей Николаевич</option>
-                        <option value="Остапова Валентина Александровна">Остапова Валентина Александровна</option>
+                        <option value="Остапова Вера Александровна">Остапова Вера Александровна</option>
                     </select>
                 </div>
 

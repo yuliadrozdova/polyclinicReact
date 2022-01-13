@@ -54,12 +54,12 @@ function Registration() {
         } else if(passwordValue.length < 6){
             setPasswordDirty(true);
             setPasswordError('Пароль должен содержать минимум 6 символов')
-        } else if(!/[A-Za-z]/g.test(passwordValue)){ //допустить только латинские буквы
-            setPasswordDirty(true);
-            setPasswordError('Пароль должен содержать хотя бы одну букву')
         }else if(/[А-Яа-яЁё]/g.test(passwordValue)){ //допустить только латинские буквы
             setPasswordDirty(true);
             setPasswordError('Используйте только латинские буквы')
+        } else if(!/[A-Za-z]/g.test(passwordValue)){
+            setPasswordDirty(true);
+            setPasswordError('Пароль должен содержать хотя бы одну букву')
         } else if(!/[?=.*\d]/g.test(passwordValue)){
             setPasswordDirty(true);
             setPasswordError('Пароль должен содержать хотя бы одну цифру')
@@ -169,7 +169,7 @@ function Registration() {
     <Modal className="modal-update" isOpen={showModalError} contentLabel="Example Modal" onRequestClose={onClose}
            shouldCloseOnOverlayClick={true}>
         <div className="modal-header">Ошибка регистрации</div>
-        <div className="modal-delete-text">Попробуйте ввести данные еще раз</div>
+        <div className="modal-delete-text">Пользователь с таким логином уже существует. Попробуйте ввести данные еще раз</div>
 
         <div className="modal-btn-footer">
             <button className='modal-btn-close' onClick={onClose}>Cancel</button>

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import edit from '../../images/edit.svg';
 import close from '../../images/delete.svg'
@@ -10,6 +11,8 @@ import SortingTricks from "./componets/sortingTricks/sortingTricks";
 import FilterTricks from "./componets/filterTricks/filterTricks";
 
 function Tricks() {
+    let navigate = useNavigate();
+
     const [tricks, setTricks] = useState([]);
     const [namePatient, setNamePatient] = useState('');
     const [nameDoctor, setNameDoctor] = useState('');
@@ -34,10 +37,7 @@ function Tricks() {
     }else{
         fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
     }
-    //
-    // if(localStorage.getItem('token')){
-    //     localStorage.removeItem('token');
-    // }
+
     const token = localStorage.getItem('token');
 
     useEffect( async() =>{
@@ -148,6 +148,16 @@ function Tricks() {
         setTricks(arr);
     }
 
+    const exitAccountClick = async () => {
+        if(localStorage.getItem('token')){
+            localStorage.removeItem('token');
+        }
+
+        await setLoading(true);
+        await navigate("/");
+        await setLoading(false);
+    }
+
     console.log('LOOG', tricks);
 
     return (
@@ -155,6 +165,10 @@ function Tricks() {
             {loading && <div className="backgroundLoading">
                 <div className="loading"></div>
             </div>}
+            <div className="exit-btn">
+                <button className='exitAccount' onClick={exitAccountClick}>Выход</button>
+            </div>
+
             <main>
                 <div className="recording-wrapper">
                     <div className="patient-name">
@@ -175,7 +189,7 @@ function Tricks() {
                             <option value="Алиев Мурат Бесланович">Алиев Мурат Бесланович</option>
                             <option value="Воронова Алиса Геннадьевна">Воронова Алиса Геннадьевна</option>
                             <option value="Иванов Алексей Николаевич">Иванов Алексей Николаевич</option>
-                            <option value="Остапова Валентина Александровна">Остапова Валентина Александровна</option>
+                            <option value="Остапова Вера Александровна">Остапова Вера Александровна</option>
                         </select>
                     </div>
 

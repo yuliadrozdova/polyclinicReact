@@ -52,12 +52,12 @@ function Authorization() {
         } else if(passwordValue.length < 6){
             setPasswordDirty(true);
             setPasswordError('Пароль должен содержать минимум 6 символов')
-        } else if(!/[A-Za-z]/g.test(passwordValue)){ //допустить только латинские буквы
-            setPasswordDirty(true);
-            setPasswordError('Пароль должен содержать хотя бы одну букву')
         } else if(/[А-Яа-яЁё]/g.test(passwordValue)){ //допустить только латинские буквы
             setPasswordDirty(true);
             setPasswordError('Используйте только латинские буквы')
+        } else if(!/[A-Za-z]/g.test(passwordValue)){
+            setPasswordDirty(true);
+            setPasswordError('Пароль должен содержать хотя бы одну букву')
         } else if(!/[?=.*\d]/g.test(passwordValue)){
             setPasswordDirty(true);
             setPasswordError('Пароль должен содержать хотя бы одну цифру')
