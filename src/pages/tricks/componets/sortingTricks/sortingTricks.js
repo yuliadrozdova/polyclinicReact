@@ -8,13 +8,13 @@ const SortingTricks = ({tricks, setTricks}) => {
     const [sortDirect, setSortDirect] = useState('asc');
 
     const [classSort, setClassSort] = useState('hidden');
-
+    const token = localStorage.getItem('token');
 
     useEffect(() => {                       //sort
         const copy = tricks.map(value => value);
         switch(sortTricks) {
             case 'none':
-                axios.get('http://localhost:4000/allTricks').then(res => {
+                axios.get('http://localhost:4000/allTricks', { headers: { Authorization: `${token}` } }).then(res => {
                     let arr = res.data.data;
                     arr.forEach(val => {
                         val.date = val.date.substring(0,10);

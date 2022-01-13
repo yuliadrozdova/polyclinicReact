@@ -8,6 +8,8 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
     const [values, setValues] = useState({ ...item });
     const [loading, setLoading] = useState(false);
 
+    const token = localStorage.getItem('token');
+
     useEffect(() => {                                                  //проверяет обновление item
         setValues({ ...item });
     },[item])
@@ -20,7 +22,12 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
     let nowYear = new Date().getFullYear();
     let nowMonth = new Date().getMonth() + 1;
     let nowDate = new Date().getDate();
-    let fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
+    let fullNowDate = '';
+    if (nowMonth<=9){
+        fullNowDate = nowYear + '-' + '0' + nowMonth + '-' + nowDate;
+    }else{
+        fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
+    }
 
     useEffect( async() =>{
         if (values.namePatient !== '' && values.nameDoctor !== '-' && values.nameDoctor !== '' && values.date !== '' && fullNowDate <= values.date && values.textComplaints !== ''){
@@ -40,8 +47,8 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
             fullNowDate <= values.date &&
             values.textComplaints !== ''){
             await axios.put('http://localhost:4000/updateTrick', {
-                values,                                                        //не правильно
-            }).then(res => {
+                values
+            }, { headers: { Authorization: `${token}` }}).then(res => {
                 newItem(values);
                 setValues('');
             });

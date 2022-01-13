@@ -5,10 +5,12 @@ import axios from "axios";
 
 const AddDeleteTrickModal = ({item, isOpen, onClose, newTricks}) => {
     const [loading, setLoading] = useState(false);
+    const token = localStorage.getItem('token');
 
     const deleteTrick = async (item) => {
         await setLoading(true);
-        await axios.delete(`http://localhost:4000/deleteTrick/${item._id}`).then(res => {
+        await axios.delete(`http://localhost:4000/deleteTrick/${item._id}`,
+            { headers: { Authorization: `${token}` }}).then(res => {
             newTricks(item);
         });
         await setLoading(false);

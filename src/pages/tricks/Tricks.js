@@ -41,7 +41,7 @@ function Tricks() {
     useEffect( async() =>{
         await setLoading(true);
 
-        await axios.get('http://localhost:4000/allTricks/', { headers: { Authorization: `${token}` } }).then(res => {
+        await axios.get('http://localhost:4000/allTricks/', { headers: { Authorization: `${token}` }}).then(res => {
             let arr = res.data.data;
             arr.forEach(val => {
                 val.date = val.date.substring(0,10);

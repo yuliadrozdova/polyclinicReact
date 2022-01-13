@@ -13,6 +13,7 @@ const FilterTricks = ({setTricks}) => {
     const [classFilterMain, setClassFilterMain] = useState('visible');
 
     const [loading, setLoading] = useState(false);
+    const token = localStorage.getItem('token');
 
     const openFilter = () => {
         setClassFilter('visible');
@@ -23,7 +24,7 @@ const FilterTricks = ({setTricks}) => {
         setClassFilter('hidden');
         setClassFilterMain('visible');
 
-        await axios.get('http://localhost:4000/allTricks').then(res => {
+        await axios.get('http://localhost:4000/allTricks', { headers: { Authorization: `${token}` } }).then(res => {
             let arr = res.data.data;
             arr.forEach(val => {
                 val.date = val.date.substring(0,10);
@@ -34,16 +35,24 @@ const FilterTricks = ({setTricks}) => {
 
     const filterTricks = async (startDate, endDate) => {
         await setLoading(true);
+        console.log('90909090')
 
         let newArray = [];
         const copy = [];
+        console.log('startDate ', startDate);
+        console.log('endDate ', endDate);
 
-        await axios.get('http://localhost:4000/allTricks').then(res => {
+        await axios.get('http://localhost:4000/allTricks', { headers: { Authorization: `${token}` } }).then(res => {
+            console.log('asdasdsadasd ', startDate);
+
             newArray = res.data.data;
             newArray.forEach(val => {
                 val.date = val.date.substring(0,10);
             })
+            console.log('newArray ', newArray);
         });
+
+
 
         if (startDate === '' && endDate  === ''){
            await setTricks(newArray);
@@ -66,6 +75,7 @@ const FilterTricks = ({setTricks}) => {
             await setTricks(copy);
 
         } else if (startDate !== '' && endDate !== ''){
+            console.log('lalala')
             await newArray.forEach(value => {
                 if (value.date >= startDate && value.date <= endDate){
                     copy.push(value);
