@@ -91,6 +91,11 @@ function Registration() {
                 login: loginValue,
                 password: passwordValue
             }).then(res => {
+                if(localStorage.getItem('token')){
+                    localStorage.removeItem('token');
+                }
+                localStorage.setItem('token', res.data.token);
+
                 setLoginValue('');
                 setPasswordValue('');
                 setPasswordRepeatValue('');
@@ -104,7 +109,7 @@ function Registration() {
         }
         await setLoading(false);
     }
-    const autorizationLink = async () => {
+    const authorizationLink = async () => {
         await setLoading(true);
         await navigate("/");
         await setLoading(false);
@@ -155,7 +160,7 @@ function Registration() {
                   {(passwordRepeatDirty && passwordRepeatError) && <div style={{color: 'red'}}>{passwordRepeatError}</div>}
 
                  <button onClick={handleClick} disabled={disabledBtn}>Зарегистрироваться</button>
-                 <button className="link" onClick={autorizationLink}>Авторизоваться</button>
+                 <button className="link" onClick={authorizationLink}>Авторизоваться</button>
 
               </div>
           </div>

@@ -13,6 +13,7 @@ const FilterTricks = ({setTricks}) => {
     const [classFilterMain, setClassFilterMain] = useState('visible');
 
     const [loading, setLoading] = useState(false);
+    // localStorage.removeItem('token');
     const token = localStorage.getItem('token');
 
     const openFilter = () => {

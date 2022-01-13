@@ -5,6 +5,7 @@ import axios from "axios";
 
 const AddDeleteTrickModal = ({item, isOpen, onClose, newTricks}) => {
     const [loading, setLoading] = useState(false);
+   // localStorage.removeItem('token');
     const token = localStorage.getItem('token');
 
     const deleteTrick = async (item) => {

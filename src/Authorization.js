@@ -79,7 +79,9 @@ function Authorization() {
                     password: passwordValue
                 }).then(res => {
                     //console.log('res ', res.data.token)
-
+                    if(localStorage.getItem('token')){
+                        localStorage.removeItem('token');
+                    }
                     localStorage.setItem('token', res.data.token);
                     //console.log(localStorage.getItem('token'));
                     setLoginValue('');

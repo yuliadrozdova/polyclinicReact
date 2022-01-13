@@ -7,7 +7,7 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
     const [disabledBtn, setDisabledBtn] = useState('disabled');
     const [values, setValues] = useState({ ...item });
     const [loading, setLoading] = useState(false);
-
+   // localStorage.removeItem('token');
     const token = localStorage.getItem('token');
 
     useEffect(() => {                                                  //проверяет обновление item

@@ -34,8 +34,10 @@ function Tricks() {
     }else{
         fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
     }
-
-
+    //
+    // if(localStorage.getItem('token')){
+    //     localStorage.removeItem('token');
+    // }
     const token = localStorage.getItem('token');
 
     useEffect( async() =>{
@@ -210,6 +212,7 @@ function Tricks() {
                         <div className="text-trick-doctor">Врач</div>
                         <div className="text-trick-date">Дата</div>
                         <div className="text-trick-complaints">Жалобы</div>
+                        <div className="text-trick-btn"></div>
                     </div>
 
                     {tricks.map((trick, index) =>
