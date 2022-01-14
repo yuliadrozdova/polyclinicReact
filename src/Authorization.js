@@ -69,22 +69,16 @@ function Authorization() {
 
     const loginClick = async () => {
         await setLoading(true);
-        // console.log('loginValue ', loginValue);
-        // await setLoginValue(loginValue.trim());
-        // passwordValue.trim();
-        // await console.log('loginValue.trim() ', loginValue);
 
             if (loginDirty === false && passwordDirty === false) {
                 await axios.post('http://localhost:4000/loginUser', {
                     login: loginValue,
                     password: passwordValue
                 }).then(res => {
-                    //console.log('res ', res.data.token)
                     if(localStorage.getItem('token')){
                         localStorage.removeItem('token');
                     }
                     localStorage.setItem('token', res.data.token);
-                    //console.log(localStorage.getItem('token'));
                     setLoginValue('');
                     setPasswordValue('');
 
@@ -106,6 +100,7 @@ function Authorization() {
     }
 
     useEffect( async() =>{
+        setDisabledBtn('');
         if (loginDirty === false && passwordDirty === false){
             setDisabledBtn('')
         }else{
