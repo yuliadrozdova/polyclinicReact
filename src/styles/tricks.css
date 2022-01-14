@@ -15,7 +15,8 @@
     font-size: 24px;
     max-height: 45px;
 }
-.recording-btn button:disabled {
+.recording-btn button:disabled,
+.filter button:disabled {
     background: #CCCCCC;
     color: rgba(0, 0 , 0, 0.5);
     cursor: auto;

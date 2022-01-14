@@ -207,7 +207,7 @@ function Tricks() {
     //     await setLoading(false);
     // }
 
-    console.log('LOOG', tricks);
+    // console.log('LOOG', tricks);
 
     return (
         <div className="tricks-page">

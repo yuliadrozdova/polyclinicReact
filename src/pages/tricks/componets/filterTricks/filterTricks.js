@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import axios from "axios";
 import open_filter from "../../../../images/open_filter.svg";
@@ -8,13 +8,21 @@ const FilterTricks = ({setTricks}) => {
 
     const [startFilterTricks, setStartFilter] = useState('');
     const [endFilterTricks, setEndFilter] = useState('');
-
     const [classFilter, setClassFilter] = useState('hidden');
     const [classFilterMain, setClassFilterMain] = useState('visible');
-
+    const [filterError1, setFilterError1] = useState(false);
+    const [filterError2, setFilterError2] = useState(false);
     const [loading, setLoading] = useState(false);
-    // localStorage.removeItem('token');
+
+    let newArray = [];
     const token = localStorage.getItem('token');
+
+    axios.get('http://localhost:4000/allTricks', { headers: { Authorization: `${token}` } }).then(res => {
+        newArray = res.data.data;
+        newArray.forEach(val => {
+            val.date = val.date.substring(0,10);
+        })
+    });
 
     const openFilter = () => {
         setClassFilter('visible');
@@ -36,32 +44,17 @@ const FilterTricks = ({setTricks}) => {
 
     const filterTricks = async (startDate, endDate) => {
         await setLoading(true);
-        console.log('90909090')
-
-        let newArray = [];
         const copy = [];
-        console.log('startDate ', startDate);
-        console.log('endDate ', endDate);
 
-        await axios.get('http://localhost:4000/allTricks', { headers: { Authorization: `${token}` } }).then(res => {
-            console.log('asdasdsadasd ', startDate);
-
-            newArray = res.data.data;
-            newArray.forEach(val => {
-                val.date = val.date.substring(0,10);
-            })
-            console.log('newArray ', newArray);
-        });
-
-
-
-        if (startDate === '' && endDate  === ''){
-           await setTricks(newArray);
-
-        } else if (startDate === '' && endDate !== ''){
+        if (startFilterTricks === '' && endFilterTricks  === ''){
+            setFilterError1(true);
+            setFilterError2(false);
+        } else  if(startFilterTricks > endFilterTricks) {
+            setFilterError2(true);
+            setFilterError1(false);
+        }else if (startDate === '' && endDate !== ''){
             await newArray.forEach(value => {
                 if (value.date <= endDate ){
-
                     copy.push(value);
                 }
             })
@@ -76,7 +69,6 @@ const FilterTricks = ({setTricks}) => {
             await setTricks(copy);
 
         } else if (startDate !== '' && endDate !== ''){
-            console.log('lalala')
             await newArray.forEach(value => {
                 if (value.date >= startDate && value.date <= endDate){
                     copy.push(value);
@@ -104,7 +96,7 @@ const FilterTricks = ({setTricks}) => {
 
             <div className={classFilter}>
                 <div className="filter">
-                    <div className="filter-wrap">
+                    <div className="end-filter">
                         <div className="start-filter-input">
                             <div className="date">
                                 <p>с:</p>
@@ -112,6 +104,8 @@ const FilterTricks = ({setTricks}) => {
                                        value={startFilterTricks}
                                        onChange={(e) => setStartFilter(e.target.value)}
                                        required/>
+                                {(filterError1) && <div style={{color: 'red', width: '150px'}}>Оба поля не могут быть пустыми</div>}
+                                {(filterError2) && <div style={{color: 'red',  width: '150px'}}>Дата начала должна быть меньше даты конца фильтрации</div>}
                             </div>
                         </div>
                     </div>
@@ -127,7 +121,7 @@ const FilterTricks = ({setTricks}) => {
                             </div>
                         </div>
                     </div>
-                    <button  onClick={() => filterTricks(startFilterTricks, endFilterTricks)}>Фильтровать</button>
+                    <button onClick={() => filterTricks(startFilterTricks, endFilterTricks)}>Фильтровать</button>
                     <img className="text-trick-btn-delete" src={close}
                          onClick={closeFilter}/>
                 </div>
