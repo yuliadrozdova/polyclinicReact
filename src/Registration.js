@@ -21,7 +21,7 @@ function Registration() {
     const [passwordRepeatDirty, setPasswordRepeatDirty] = useState(true);
     const [passwordRepeatError, setPasswordRepeatError] = useState('Введите данные');
 
-    const [disabledBtn, setDisabledBtn] = useState('disabled');
+    const [disabledBtn, setDisabledBtn] = useState('');
     const [showModalError, setShowModalError] = useState(false);
 
     const [loading, setLoading] = useState(false);

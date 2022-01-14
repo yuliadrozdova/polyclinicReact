@@ -28,7 +28,7 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
     }else{
         fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
     }
-    let fullMaxDate="2022-12-31"
+    let fullMaxDate="2023-12-31"
 
     useEffect( async() =>{
         if (values.namePatient !== '' && values.nameDoctor !== '-' && values.nameDoctor !== '' && values.date !== '' && fullNowDate <= values.date  && values.date <= fullMaxDate && values.textComplaints !== ''){
@@ -96,6 +96,7 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
                     <p>Дата:</p>
                     <input type="date"
                            id={'modal-date'}
+                           max={fullMaxDate}
                            value={values.date}
                            onChange={updateInput}
                            required/>

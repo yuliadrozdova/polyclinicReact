@@ -19,9 +19,15 @@ function Tricks() {
     const [date, setDate] = useState('');
     const [textComplaints, setTextComplaints] = useState('');
 
+    const [namePatientDirty, setNamePatientDirty] = useState(false);
+    const [nameDoctorDirty, setNameDoctorDirty] = useState(false);
+    const [dateDirty1, setDateDirty1] = useState(false);
+    const [dateDirty2, setDateDirty2] = useState(false);
+    const [textComplaintsDirty, setTextComplaintsDirty] = useState(false);
+    //const [namePatientError, setNamePatientError] = useState('');
+
     const [showModal, setShowModal] = useState(false);
     const [itemModal, setItemModal] = useState('');
-
     const [showModalDelete, setShowModalDelete] = useState(false);
     const [indexModal, setIndexModal] = useState('');
 
@@ -37,7 +43,7 @@ function Tricks() {
     }else{
         fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
     }
-    let fullMaxDate="2022-12-31"
+    let fullMaxDate="2023-12-31"
 
     const token = localStorage.getItem('token');
 
@@ -55,12 +61,51 @@ function Tricks() {
     }, []);
 
     useEffect(   () =>{        //disabled button with create trick
-       console.log('1111 ', date);
+        if(namePatient.trim() !== ''){
+            setNamePatientDirty(false);
+            setDisabledBtn('');
+        }
+        if(nameDoctor !== '-' || nameDoctor !==''){
+            setNameDoctorDirty(false);
+            setDisabledBtn('');
+        }
+        if(date !== ''){
+            setDateDirty1(false);
+            setDisabledBtn('');
+        }
+        if(fullNowDate <= date && date <= fullMaxDate){
+            setDateDirty2(false);
+            setDisabledBtn('');
+        }
+        if(textComplaints.trim() !== ''){
+            setTextComplaintsDirty(false);
+            setDisabledBtn('');
+        }
 
-        if (namePatient !== '' && nameDoctor !== '-' && nameDoctor !== '' && date !== '' && fullNowDate <= date && date <= fullMaxDate && textComplaints !== ''){
-            console.log('!!! ', namePatient);
-            setDisabledBtn('')
-        }else{
+
+        if(namePatient.trim() === ''){
+            setNamePatientDirty(true);
+            setDisabledBtn('disabled');
+        }
+        if(nameDoctor === '-' || nameDoctor ===''){
+            setNameDoctorDirty(true);
+            setDisabledBtn('disabled');
+        }
+
+        if(fullNowDate >= date || date >= fullMaxDate){
+            setDateDirty2(true);
+            setDateDirty1(false);
+            setDisabledBtn('disabled');
+        }
+        if(date === ''){
+
+            setDateDirty1(true);
+            setDateDirty2(false);
+
+            setDisabledBtn('disabled');
+        }
+        if(textComplaints.trim() === ''){
+            setTextComplaintsDirty(true);
             setDisabledBtn('disabled');
         }
     }, [namePatient, nameDoctor, date, textComplaints]);
@@ -68,17 +113,15 @@ function Tricks() {
 
     const createNewTrick = async () => {
         await setLoading(true);
-        // setNamePatient(namePatient.trim());
-        // setTextComplaints(textComplaints.trim());
-        // console.log('setNamePatient(namePatient.trim()) ', namePatient.trim());
+        console.log('*', namePatient);
 
-        if (namePatient !== '' &&
+        if (namePatient.trim() !== '' &&
             nameDoctor !== '-' &&
             nameDoctor !=='' &&
             date !== '' &&
             fullNowDate <= date &&
             date <= fullMaxDate &&
-            textComplaints !== ''){
+            textComplaints.trim() !== ''){
             await axios.post('http://localhost:4000/createTrick', {
                 namePatient,
                 nameDoctor,
@@ -99,6 +142,12 @@ function Tricks() {
             });
         }
         await setLoading(false);
+
+        setNamePatientDirty(false);
+        setNameDoctorDirty(false);
+        setDateDirty1(false);
+        setDateDirty2(false);
+        setTextComplaintsDirty(false);
     }
 
     const editTrick = (item) => {
@@ -140,11 +189,6 @@ function Tricks() {
         setShowModalDelete(false)
     }
 
-    const change = trick => (event) =>{
-        trick.textPatientUpdate = event.target.value;
-        return trick;
-    }
-
     const sortTricks = (arr) => {
         setTricks(arr);
     }
@@ -182,6 +226,7 @@ function Tricks() {
                                value={namePatient}
                                onChange={(e) => setNamePatient(e.target.value)}
                                required/>
+                        {(namePatientDirty) && <div style={{color: 'red'}}>Введите имя пациента</div>}
                     </div>
 
                     {/*есть такая штука как <datalist>, может она подойдет лучше*/}
@@ -196,15 +241,18 @@ function Tricks() {
                             <option value="Иванов Алексей Николаевич">Иванов Алексей Николаевич</option>
                             <option value="Остапова Вера Александровна">Остапова Вера Александровна</option>
                         </select>
+                        {(nameDoctorDirty) && <div style={{color: 'red'}}>Введите имя врача</div>}
                     </div>
 
                     <div className="date">
                         <p>Дата:</p>
                         <input type="date"
-                               max="2022-12-31"
+                               max={fullMaxDate}
                                value={date}
                                onChange={(e) => setDate(e.target.value)}
                                required/>
+                        {(dateDirty1) && <div style={{color: 'red'}}>Введите дату приема</div>}
+                        {(dateDirty2) && <div style={{color: 'red'}}>Дата не может быть меньше {fullNowDate} или больше {fullMaxDate}</div>}
                     </div>
 
                     <div className="complaints">
@@ -213,6 +261,7 @@ function Tricks() {
                                value={textComplaints}
                                onChange={(e) => setTextComplaints(e.target.value)}
                                required/>
+                        {(textComplaintsDirty) && <div style={{color: 'red'}}>Введите жалобы пациента</div>}
                     </div>
 
                     <div className="recording-btn">

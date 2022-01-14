@@ -15,7 +15,7 @@ function Authorization() {
     const [passwordDirty, setPasswordDirty] = useState(true);
     const [passwordError, setPasswordError] = useState('');
     const [showModalError, setShowModalError] = useState(false);
-    const [disabledBtn, setDisabledBtn] = useState('disabled');
+    const [disabledBtn, setDisabledBtn] = useState('');
     const [loading, setLoading] = useState(false);
 
     const onClose = () => {
