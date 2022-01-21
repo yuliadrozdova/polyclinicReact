@@ -82,7 +82,7 @@ function Authorization() {
                     setLoginValue('');
                     setPasswordValue('');
 
-                    navigate("/Tricks");
+                    navigate("/tricks");
                 }).catch(error => {
                     setShowModalError(true);
                 } );
@@ -99,7 +99,7 @@ function Authorization() {
         await setLoading(false);
     }
 
-    useEffect( async() =>{
+    useEffect( () =>{
         setDisabledBtn('');
         if (loginDirty === false && passwordDirty === false){
             setDisabledBtn('')

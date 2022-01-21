@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from "react-modal";
 import axios from "axios";
 
-const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
-    const [disabledBtn, setDisabledBtn] = useState('disabled');
+const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {const [disabledBtn, setDisabledBtn] = useState('disabled');
     const [values, setValues] = useState({ ...item });
     const [loading, setLoading] = useState(false);
    // localStorage.removeItem('token');
@@ -24,13 +23,13 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
     let nowDate = new Date().getDate();
     let fullNowDate = '';
     if (nowMonth<=9){
-        fullNowDate = nowYear + '-' + '0' + nowMonth + '-' + nowDate;
+        fullNowDate = nowYear + '-' + 0 + nowMonth + '-' + nowDate;
     }else{
         fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
     }
     let fullMaxDate="2023-12-31"
 
-    useEffect( async() =>{
+    useEffect( () =>{
         if (values.namePatient !== '' && values.nameDoctor !== '-' && values.nameDoctor !== '' && values.date !== '' && fullNowDate <= values.date  && values.date <= fullMaxDate && values.textComplaints !== ''){
             setDisabledBtn('')
         }else{
@@ -122,9 +121,9 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {
 };
 
 AddEditTrickModal.propTypes = {
-    item: PropTypes.object,
+    item: PropTypes.string,
     isOpen: PropTypes.bool,
-    onClose: PropTypes.bool,
+    onClose: PropTypes.func,
 };
 
 export default AddEditTrickModal;

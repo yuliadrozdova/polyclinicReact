@@ -31,7 +31,9 @@ const SortingTricks = ({tricks, setTricks}) => {
                     case 'desc':
                         copy.sort((a,b) => b.namePatient.localeCompare(a.namePatient));
                         return setTricks(copy);
-                };
+                    default: console.log('err');
+                }
+                break;
 
             case 'doctor':
                 setClassSort('visible');
@@ -42,7 +44,9 @@ const SortingTricks = ({tricks, setTricks}) => {
                     case 'desc':
                         copy.sort((a,b) => b.nameDoctor.localeCompare(a.nameDoctor));
                         return setTricks(copy);
-                };
+                    default: console.log('err');
+                }
+                break;
 
             case 'date':
                 setClassSort('visible');
@@ -53,7 +57,9 @@ const SortingTricks = ({tricks, setTricks}) => {
                     case 'desc':
                         copy.sort((a,b) => b.date.localeCompare(a.date));
                         return setTricks(copy);
-                };
+                    default: console.log('err');
+                }
+                break;
 
             default:
                 return 'sort default';
@@ -92,7 +98,7 @@ const SortingTricks = ({tricks, setTricks}) => {
 };
 
 SortingTricks.propTypes = {
-    tricks: PropTypes.object,
+    tricks: PropTypes.array,
 };
 
 export default SortingTricks;

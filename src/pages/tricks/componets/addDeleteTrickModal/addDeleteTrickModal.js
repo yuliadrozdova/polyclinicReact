@@ -36,9 +36,9 @@ const AddDeleteTrickModal = ({item, isOpen, onClose, newTricks}) => {
 };
 
 AddDeleteTrickModal.propTypes = {
-    item: PropTypes.object,
+    item: PropTypes.string,
     isOpen: PropTypes.bool,
-    onClose: PropTypes.bool,
+    onClose: PropTypes.func,
 };
 
 export default AddDeleteTrickModal;

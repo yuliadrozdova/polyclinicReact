@@ -100,7 +100,7 @@ function Registration() {
                 setPasswordValue('');
                 setPasswordRepeatValue('');
 
-                navigate("/Tricks");
+                navigate("/tricks");
             }).catch(error => {
                 setShowModalError(true);
             } );
@@ -126,7 +126,7 @@ function Registration() {
 
     },[passwordValue, passwordRepeatValue])
 
-    useEffect( async() =>{
+    useEffect( () =>{
         if (!loginDirty && !passwordDirty && !passwordRepeatDirty){
             setDisabledBtn('')
         }else{

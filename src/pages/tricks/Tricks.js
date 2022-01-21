@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import edit from '../../images/edit.svg';
 import close from '../../images/delete.svg'
@@ -39,7 +38,7 @@ function Tricks() {
     let nowDate = new Date().getDate();
     let fullNowDate = '';
     if (nowMonth<=9){
-        fullNowDate = nowYear + '-' + '0' + nowMonth + '-' + nowDate;
+        fullNowDate = nowYear + '-' + 0 + nowMonth + '-' + nowDate;
     }else{
         fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
     }
@@ -292,9 +291,9 @@ function Tricks() {
                             <div className="text-trick-complaints">{trick.textComplaints}</div>
 
                             <div className="text-trick-btn">
-                                <img className="text-trick-btn-delete" src={close}
+                                <img className="text-trick-btn-delete" src={close} alt="button open modal delete"
                                      onClick={() => openModalDelete(index)}/>
-                                <img className="text-trick-btn-update" src={edit}
+                                <img className="text-trick-btn-update" src={edit} alt="button update trick"
                                      onClick={() => openModalUpdate(index) }/>
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import axios from "axios";
 import open_filter from "../../../../images/open_filter.svg";
@@ -89,7 +89,7 @@ const FilterTricks = ({setTricks}) => {
             <div className={classFilterMain}>
                 <div className="filter-main-wrap">
                     <div>Добавить фильтр по дате:</div>
-                    <img className="open-filter-image" src={open_filter}
+                    <img className="open-filter-image" src={open_filter} alt="button open filter"
                          onClick={openFilter}/>
                 </div>
             </div>
@@ -122,7 +122,7 @@ const FilterTricks = ({setTricks}) => {
                         </div>
                     </div>
                     <button onClick={() => filterTricks(startFilterTricks, endFilterTricks)}>Фильтровать</button>
-                    <img className="text-trick-btn-delete" src={close}
+                    <img className="text-trick-btn-delete" src={close} alt="button delete trick"
                          onClick={closeFilter}/>
                 </div>
             </div>
