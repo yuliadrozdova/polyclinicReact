@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import logo from './images/logo.svg';
 import './styles/App.css';
 import {
@@ -10,44 +10,48 @@ import {
 import Registration from './Registration';
 import Authorization from "./Authorization";
 import Tricks from "./pages/tricks/Tricks";
-import * as url from "url";
 
 export default function App() {
+
     const spinner = document.getElementById('spinner');
     const [classBtnExit, setClassBtnExit] = useState('hidden');
-    let headerPage = '';
+    const [headerPage, setHeaderPage] = useState('');
+    const test = () => {
+        if(window.location.pathname.toLowerCase() === "/registration"){
+            setHeaderPage('Зарегистрироваться в системе');
+            setClassBtnExit('hidden');
+        }
+        if(window.location.pathname.toLowerCase() === "/"){
+            setHeaderPage('Войти в систему');
+            setClassBtnExit('hidden');
+        }
 
+        console.log('111 ', window.location.pathname)
+        if(window.location.pathname.toLowerCase() === "/tricks"){
+            setHeaderPage('Приемы');
+            setClassBtnExit('visible');
+        }
+    }
     if (spinner && !spinner.hasAttribute('hidden')) {
         spinner.setAttribute('hidden', 'true');
     }
+    useEffect(() => {
+        test();
+    }, []);
 
-    if(Link.to === "/registration"){
-        headerPage = 'Зарегистрироваться в системе';
-        setClassBtnExit('hidden');
-    }
-    if(Link.to === "/"){
-        headerPage = 'Войти в систему';
-        setClassBtnExit('hidden');
-        console.log('LOG111 ', Link.to);
-    }
-
-    console.log('111 ', window.location.pathname)
-    if(window.location.pathname === "/tricks"){
-        headerPage = 'Приемы';
-        setClassBtnExit('visible');
-    }
     const exitAccountClick = async () => {
         if(localStorage.getItem('token')){
             localStorage.removeItem('token');
         }
+        window.location.assign('http://localhost:3000/');
     }
 
-
     function Header() {
+
         return (
             <header>
                 <img src={logo} className="logo" alt="logo" />
-                <h1 className="header-page">{headerPage}</h1>
+                <h1 className="header-page" >{headerPage}</h1>
                 <div className="exit-btn">
                     <button className={classBtnExit} onClick={exitAccountClick}>Выход</button>
                 </div>

@@ -10,14 +10,18 @@ function Authorization() {
 
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
-    const [loginDirty, setLoginDirty] = useState(true);
+    const [loginDirty, setLoginDirty] = useState(false);
     const [loginError, setLoginError] = useState('');
-    const [passwordDirty, setPasswordDirty] = useState(true);
+    const [passwordDirty, setPasswordDirty] = useState(false);
     const [passwordError, setPasswordError] = useState('');
     const [showModalError, setShowModalError] = useState(false);
     const [disabledBtn, setDisabledBtn] = useState('');
     const [loading, setLoading] = useState(false);
 
+    console.log(disabledBtn);
+    console.log(loginValue);
+    console.log(passwordValue);
+    console.log(loginDirty);
     const onClose = () => {
         setShowModalError(false)
     }

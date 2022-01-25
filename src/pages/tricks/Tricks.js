@@ -50,12 +50,14 @@ function Tricks() {
         await setLoading(true);
 
         await axios.get('http://localhost:4000/allTricks/', { headers: { Authorization: `${token}` }}).then(res => {
+            console.log(token);
             let arr = res.data.data;
             arr.forEach(val => {
                 val.date = val.date.substring(0,10);
             })
             setTricks(arr);
         });
+        console.log('2222222222222')
         await setLoading(false);
     }, []);
 
@@ -112,7 +114,9 @@ function Tricks() {
 
     const createNewTrick = async () => {
         await setLoading(true);
-        console.log('*', namePatient);
+        let nameP = namePatient.toLowerCase();
+        await setNamePatient(nameP);
+        console.log('*', nameP);
 
         if (namePatient.trim() !== '' &&
             nameDoctor !== '-' &&
@@ -213,6 +217,7 @@ function Tricks() {
             {loading && <div className="backgroundLoading">
                 <div className="loading"></div>
             </div>}
+
             {/*<div className="exit-btn">*/}
             {/*    <button className='exitAccount' onClick={exitAccountClick}>Выход</button>*/}
             {/*</div>*/}

@@ -4,6 +4,7 @@
   font-weight: 300;
   line-height: 118%;
   margin-top: 36px;
+  width: 100%;
 }
 header{
   display: flex;
