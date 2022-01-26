@@ -134,7 +134,7 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {const [disabled
 };
 
 AddEditTrickModal.propTypes = {
-    item: PropTypes.string,
+    item: PropTypes.object,
     isOpen: PropTypes.bool,
     onClose: PropTypes.func,
 };

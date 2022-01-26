@@ -192,20 +192,20 @@ function Tricks() {
         setTextComplaintsDirty(false);
     }
 
-    const editTrick = (namePatient,
-                         nameDoctor,
-                         date,
-                         textComplaints,
-                         id) => {
-        tricks.forEach(value => {
+    const editTrick = async (namePatient, nameDoctor, date, textComplaints, id) => {
+
+        await tricks.forEach(value => {
             if (value._id === id){
+                console.log('0000')
                 value.namePatient = namePatient;
+                console.log('value.namePatient ', value.namePatient)
                 value.nameDoctor = nameDoctor;
                 value.date = date;
                 value.textComplaints = textComplaints;
+                console.log('value', value)
             }
         })
-        setTricks(tricks);
+        await setTricks(tricks);
     }
 
     const deleteTrick = (item) => {
