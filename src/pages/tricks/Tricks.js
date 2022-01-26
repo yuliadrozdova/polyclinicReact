@@ -33,6 +33,44 @@ function Tricks() {
     const [disabledBtn, setDisabledBtn] = useState('disabled');
     const [loading, setLoading] = useState(false);
 
+
+    // let request;
+
+    // axios.interceptors.request.use(async (req) => {
+    //     req.headers.authorization = await localStorage.getItem('token');
+    //     if (req.url === 'http://localhost:3000/refreshToken') return req;
+    //     request = req;
+    //     return req;
+    // });
+
+    // axios.interceptors.response.use((res) => res, async (err) => {
+    //     if (err.response.status === 401) {
+    //         const refTokenSend = {
+    //             refToken: localStorage.getItem('refToken'),
+    //         };
+    //         await axios.post('http://localhost:3000/refreshToken', refTokenSend)
+    //             .then((response) => {
+    //                 const { token, refToken } = response.data;
+    //                 localStorage.setItem('token', token);
+    //                 localStorage.setItem('refToken', refToken);
+    //                 return 0;
+    //             });
+    //
+    //         request.authorization = localStorage.getItem('token');
+    //         return axios.request(request);
+    //     }
+    //
+    //     if (err.response.status === 403) {
+    //         localStorage.clear();
+    //         window.location.href = '/login';
+    //         return 0;
+    //     }
+    //     return 0;
+    // });
+
+
+
+
     let nowYear = new Date().getFullYear();
     let nowMonth = new Date().getMonth() + 1;
     let nowDate = new Date().getDate();
@@ -112,11 +150,29 @@ function Tricks() {
     }, [namePatient, nameDoctor, date, textComplaints]);
 
 
+    const createTrickAxios = async (namePatient, nameDoctor, date, textComplaints) => {
+        console.log('*', namePatient, 111111);
+        await axios.post('http://localhost:4000/createTrick', {
+            namePatient,
+            nameDoctor,
+            date,
+            textComplaints
+        }, { headers: { Authorization: `${token}` }}).then(res => {
+            setNamePatient('');
+            setNameDoctor('');
+            setDate('');
+            setTextComplaints('');
+
+            const copy = tricks.map(value => value); //изменение копии стейта
+            let arr = res.data.data;
+            arr.date = arr.date.substring(0,10);
+
+            copy.push(arr);
+            setTricks(copy);
+        });
+    }
     const createNewTrick = async () => {
-        await setLoading(true);
-        let nameP = namePatient.toLowerCase();
-        await setNamePatient(nameP);
-        console.log('*', nameP);
+        setLoading(true);
 
         if (namePatient.trim() !== '' &&
             nameDoctor !== '-' &&
@@ -125,24 +181,7 @@ function Tricks() {
             fullNowDate <= date &&
             date <= fullMaxDate &&
             textComplaints.trim() !== ''){
-            await axios.post('http://localhost:4000/createTrick', {
-                namePatient,
-                nameDoctor,
-                date,
-                textComplaints
-            }, { headers: { Authorization: `${token}` }}).then(res => {
-                setNamePatient('');
-                setNameDoctor('');
-                setDate('');
-                setTextComplaints('');
-
-                const copy = tricks.map(value => value); //изменение копии стейта
-                let arr = res.data.data;
-                arr.date = arr.date.substring(0,10);
-
-                copy.push(arr);
-                setTricks(copy);
-            });
+            createTrickAxios(namePatient.trim(), nameDoctor, date, textComplaints.trim());
         }
         await setLoading(false);
 

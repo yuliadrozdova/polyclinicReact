@@ -5,9 +5,8 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Modal from "react-modal";
 
-function Registration() {
+function Registration(props) {
     let navigate = useNavigate();
-
     const [loginValue, setLoginValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
     const [passwordRepeatValue, setPasswordRepeatValue] = useState('');
@@ -99,7 +98,7 @@ function Registration() {
                 setLoginValue('');
                 setPasswordValue('');
                 setPasswordRepeatValue('');
-
+                props.action('Приемы', 'visible')
                 navigate("/tricks");
             }).catch(error => {
                 setShowModalError(true);
@@ -111,6 +110,7 @@ function Registration() {
     }
     const authorizationLink = async () => {
         await setLoading(true);
+        props.action('Войти в систему', 'hidden')
         await navigate("/");
         await setLoading(false);
     }
@@ -179,5 +179,6 @@ function Registration() {
 </div>
   );
 }
+
 
  export default Registration;

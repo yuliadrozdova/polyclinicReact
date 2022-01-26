@@ -5,7 +5,7 @@ import './styles/authorization.css';
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 
-function Authorization() {
+function Authorization(props) {
     let navigate = useNavigate();
 
     const [loginValue, setLoginValue] = useState('');
@@ -85,8 +85,9 @@ function Authorization() {
                     localStorage.setItem('token', res.data.token);
                     setLoginValue('');
                     setPasswordValue('');
-
+                    props.action('Приемы', 'visible')
                     navigate("/tricks");
+
                 }).catch(error => {
                     setShowModalError(true);
                 } );
@@ -99,6 +100,7 @@ function Authorization() {
 
     const registrationLink = async () => {
         await setLoading(true);
+        props.action('Зарегистрироваться в системе', 'hidden')
         await navigate("/registration");
         await setLoading(false);
     }
