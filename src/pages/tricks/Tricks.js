@@ -192,13 +192,17 @@ function Tricks() {
         setTextComplaintsDirty(false);
     }
 
-    const editTrick = (item) => {
+    const editTrick = (namePatient,
+                         nameDoctor,
+                         date,
+                         textComplaints,
+                         id) => {
         tricks.forEach(value => {
-            if (value._id === item._id){
-                value.namePatient = item.namePatient;
-                value.nameDoctor = item.nameDoctor;
-                value.date = item.date;
-                value.textComplaints = item.textComplaints;
+            if (value._id === id){
+                value.namePatient = namePatient;
+                value.nameDoctor = nameDoctor;
+                value.date = date;
+                value.textComplaints = textComplaints;
             }
         })
         setTricks(tricks);

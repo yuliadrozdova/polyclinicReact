@@ -37,6 +37,24 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {const [disabled
         }
     }, [values.namePatient, values.nameDoctor, values.date, values.textComplaints]);
 
+
+    const updateTrickAxios = async (namePatient, nameDoctor, date, textComplaints, id)=> {
+        await axios.put('http://localhost:4000/updateTrick', {
+            namePatient,
+            nameDoctor,
+            date,
+            textComplaints,
+            id
+        }, { headers: { Authorization: `${token}` }}).then(res => {
+            newItem(namePatient,
+                nameDoctor,
+                date,
+                textComplaints,
+                id);
+            setValues('');
+        });
+    }
+
     const updateTrick = async () => {
         await setLoading(true);
 
@@ -47,12 +65,7 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {const [disabled
             fullNowDate <= values.date &&
             values.date <= fullMaxDate &&
             values.textComplaints !== ''){
-            await axios.put('http://localhost:4000/updateTrick', {
-                values
-            }, { headers: { Authorization: `${token}` }}).then(res => {
-                newItem(values);
-                setValues('');
-            });
+                updateTrickAxios(values.namePatient.trim(), values.nameDoctor, values.date, values.textComplaints.trim(), values._id);
         }
         await setLoading(false);
         await onClose(true);
