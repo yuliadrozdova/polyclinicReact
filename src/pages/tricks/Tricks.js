@@ -99,6 +99,7 @@ function Tricks() {
         await setLoading(false);
     }, []);
 
+
     useEffect(   () =>{        //disabled button with create trick
         if(namePatient.trim() !== ''){
             setNamePatientDirty(false);
@@ -193,8 +194,8 @@ function Tricks() {
     }
 
     const editTrick = async (namePatient, nameDoctor, date, textComplaints, id) => {
-
-        await tricks.forEach(value => {
+        const copy = tricks.map(value => value); //изменение копии стейта
+        await copy.forEach(value => {
             if (value._id === id){
                 console.log('0000')
                 value.namePatient = namePatient;
@@ -204,8 +205,11 @@ function Tricks() {
                 value.textComplaints = textComplaints;
                 console.log('value', value)
             }
-        })
-        await setTricks(tricks);
+        });
+        setTricks(copy);
+
+       // await setTricks(tricks);
+        console.log('----', tricks)
     }
 
     const deleteTrick = (item) => {
@@ -243,27 +247,11 @@ function Tricks() {
         setTricks(arr);
     }
 
-    // const exitAccountClick = async () => {
-    //     if(localStorage.getItem('token')){
-    //         localStorage.removeItem('token');
-    //     }
-    //
-    //     await setLoading(true);
-    //     await navigate("/");
-    //     await setLoading(false);
-    // }
-
-    // console.log('LOOG', tricks);
-
     return (
         <div className="tricks-page">
             {loading && <div className="backgroundLoading">
                 <div className="loading"></div>
             </div>}
-
-            {/*<div className="exit-btn">*/}
-            {/*    <button className='exitAccount' onClick={exitAccountClick}>Выход</button>*/}
-            {/*</div>*/}
 
             <main>
                 <div className="recording-wrapper">
