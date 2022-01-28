@@ -8,6 +8,7 @@
 .exit-btn{
     width: 100%;
 }
+
 .exit-btn > button{
     position: absolute;
     right: 30px;
@@ -25,6 +26,16 @@
     background: white;
     cursor: pointer;
 }
+
+.recording-wrapper p::before{
+    content: '*';
+    color: red;
+    margin-right: 5px;
+    font-size: 12px;
+    line-height: 180%;
+
+}
+
 
 .tricks-page body{
     margin: 0 auto;

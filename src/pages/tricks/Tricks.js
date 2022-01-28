@@ -101,53 +101,16 @@ function Tricks() {
 
 
     useEffect(   () =>{        //disabled button with create trick
-        if(namePatient.trim() !== ''){
-            setNamePatientDirty(false);
-            setDisabledBtn('');
-        }
-        if(nameDoctor !== '-' || nameDoctor !==''){
-            setNameDoctorDirty(false);
-            setDisabledBtn('');
-        }
-        if(date !== ''){
-            setDateDirty1(false);
-            setDisabledBtn('');
-        }
-        if(fullNowDate <= date && date <= fullMaxDate){
-            setDateDirty2(false);
-            setDisabledBtn('');
-        }
-        if(textComplaints.trim() !== ''){
-            setTextComplaintsDirty(false);
-            setDisabledBtn('');
-        }
-
-
-        if(namePatient.trim() === ''){
-            setNamePatientDirty(true);
-            setDisabledBtn('disabled');
-        }
-        if(nameDoctor === '-' || nameDoctor ===''){
-            setNameDoctorDirty(true);
+        if (namePatient.trim() !== '' &&
+            nameDoctor !== '-' &&
+            nameDoctor !=='' &&
+            date !== '' &&
+            textComplaints.trim() !== ''){
+                setDisabledBtn('');
+        }else{
             setDisabledBtn('disabled');
         }
 
-        if(fullNowDate >= date || date >= fullMaxDate){
-            setDateDirty2(true);
-            setDateDirty1(false);
-            setDisabledBtn('disabled');
-        }
-        if(date === ''){
-
-            setDateDirty1(true);
-            setDateDirty2(false);
-
-            setDisabledBtn('disabled');
-        }
-        if(textComplaints.trim() === ''){
-            setTextComplaintsDirty(true);
-            setDisabledBtn('disabled');
-        }
     }, [namePatient, nameDoctor, date, textComplaints]);
 
 
@@ -173,6 +136,12 @@ function Tricks() {
         });
     }
     const createNewTrick = async () => {
+
+        if(fullNowDate >= date || date >= fullMaxDate){
+            setDateDirty2(true);
+            setDateDirty1(false);
+        }
+
         setLoading(true);
 
         if (namePatient.trim() !== '' &&
@@ -186,11 +155,6 @@ function Tricks() {
         }
         await setLoading(false);
 
-        setNamePatientDirty(false);
-        setNameDoctorDirty(false);
-        setDateDirty1(false);
-        setDateDirty2(false);
-        setTextComplaintsDirty(false);
     }
 
     const editTrick = async (namePatient, nameDoctor, date, textComplaints, id) => {
@@ -208,7 +172,6 @@ function Tricks() {
         });
         setTricks(copy);
 
-       // await setTricks(tricks);
         console.log('----', tricks)
     }
 
