@@ -6,13 +6,14 @@ import axios from "axios";
 const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {const [disabledBtn, setDisabledBtn] = useState('disabled');
     const [values, setValues] = useState({ ...item });
     const [loading, setLoading] = useState(false);
-   // localStorage.removeItem('token');
-    const token = localStorage.getItem('token');
 
+    const token = localStorage.getItem('token');
+// console.log('10101', item)
     useEffect(() => {                                                  //проверяет обновление item
         setValues({ ...item });
     },[item])
 
+    // console.log('20202', values.namePatient)
     const updateInput = (e) => {
         const {value, id} = e.target;
         const field = id.replace('modal-', '')
@@ -30,8 +31,14 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {const [disabled
     let fullMaxDate="2023-12-31"
 
     useEffect( () =>{
-        if (values.namePatient !== '' && values.nameDoctor !== '-' && values.nameDoctor !== '' && values.date !== '' && fullNowDate <= values.date  && values.date <= fullMaxDate && values.textComplaints !== ''){
-            setDisabledBtn('')
+        if (values.namePatient !== '' &&
+            values.nameDoctor !== '-' &&
+            values.nameDoctor !== '' &&
+            values.date !== '' &&
+            fullNowDate <= values.date  &&
+            values.date <= fullMaxDate &&
+            values.textComplaints !== ''){
+                setDisabledBtn('')
         }else{
             setDisabledBtn('disabled');
         }
@@ -46,7 +53,7 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {const [disabled
             textComplaints,
             id
         }, { headers: { Authorization: `${token}` }}).then(res => {
-            newItem(namePatient,
+                newItem(namePatient,
                 nameDoctor,
                 date,
                 textComplaints,
@@ -134,7 +141,7 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {const [disabled
 };
 
 AddEditTrickModal.propTypes = {
-    item: PropTypes.object,
+    item: PropTypes.string,
     isOpen: PropTypes.bool,
     onClose: PropTypes.func,
 };

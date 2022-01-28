@@ -25,7 +25,6 @@ export default function App() {
             setHeaderPage('Войти в систему');
             setClassBtnExit('hidden');
         }
-        console.log('111 ', window.location.pathname)
         if(window.location.pathname.toLowerCase() === "/tricks"){
             setHeaderPage('Приемы');
             setClassBtnExit('visible');
@@ -37,7 +36,6 @@ export default function App() {
     }
 
     useEffect(() => {
-        console.log('pathname ', window.location.pathname);
         renderHeader();
     }, []);
 

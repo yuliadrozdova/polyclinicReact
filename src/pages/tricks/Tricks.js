@@ -18,11 +18,11 @@ function Tricks() {
     const [date, setDate] = useState('');
     const [textComplaints, setTextComplaints] = useState('');
 
-    const [namePatientDirty, setNamePatientDirty] = useState(false);
-    const [nameDoctorDirty, setNameDoctorDirty] = useState(false);
+    //const [namePatientDirty, setNamePatientDirty] = useState(false);
+    //const [nameDoctorDirty, setNameDoctorDirty] = useState(false);
     const [dateDirty1, setDateDirty1] = useState(false);
     const [dateDirty2, setDateDirty2] = useState(false);
-    const [textComplaintsDirty, setTextComplaintsDirty] = useState(false);
+    //const [textComplaintsDirty, setTextComplaintsDirty] = useState(false);
     //const [namePatientError, setNamePatientError] = useState('');
 
     const [showModal, setShowModal] = useState(false);
@@ -88,14 +88,13 @@ function Tricks() {
         await setLoading(true);
 
         await axios.get('http://localhost:4000/allTricks/', { headers: { Authorization: `${token}` }}).then(res => {
-            console.log(token);
             let arr = res.data.data;
             arr.forEach(val => {
                 val.date = val.date.substring(0,10);
             })
             setTricks(arr);
         });
-        console.log('2222222222222')
+
         await setLoading(false);
     }, []);
 
@@ -186,6 +185,7 @@ function Tricks() {
     }
 
     const openModalUpdate = async (index) => {
+        // console.log('111111', tricks[index])
         setItemModal(tricks[index]);
         setShowModal(true);
     }
@@ -224,7 +224,7 @@ function Tricks() {
                                value={namePatient}
                                onChange={(e) => setNamePatient(e.target.value)}
                                required/>
-                        {(namePatientDirty) && <div style={{color: 'red'}}>Введите имя пациента</div>}
+                        {/*{(namePatientDirty) && <div style={{color: 'red'}}>Введите имя пациента</div>}*/}
                     </div>
 
                     {/*есть такая штука как <datalist>, может она подойдет лучше*/}
@@ -239,7 +239,7 @@ function Tricks() {
                             <option value="Иванов Алексей Николаевич">Иванов Алексей Николаевич</option>
                             <option value="Остапова Вера Александровна">Остапова Вера Александровна</option>
                         </select>
-                        {(nameDoctorDirty) && <div style={{color: 'red'}}>Введите имя врача</div>}
+                        {/*{(nameDoctorDirty) && <div style={{color: 'red'}}>Введите имя врача</div>}*/}
                     </div>
 
                     <div className="date">
@@ -259,7 +259,7 @@ function Tricks() {
                                value={textComplaints}
                                onChange={(e) => setTextComplaints(e.target.value)}
                                required/>
-                        {(textComplaintsDirty) && <div style={{color: 'red'}}>Введите жалобы пациента</div>}
+                        {/*{(textComplaintsDirty) && <div style={{color: 'red'}}>Введите жалобы пациента</div>}*/}
                     </div>
 
                     <div className="recording-btn">
