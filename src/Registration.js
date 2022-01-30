@@ -11,13 +11,13 @@ function Registration(props) {
     const [passwordValue, setPasswordValue] = useState('');
     const [passwordRepeatValue, setPasswordRepeatValue] = useState('');
 
-    const [loginDirty, setLoginDirty] = useState(true);
+    const [loginDirty, setLoginDirty] = useState(false);
     const [loginError, setLoginError] = useState('Введите данные');
 
-    const [passwordDirty, setPasswordDirty] = useState(true);
+    const [passwordDirty, setPasswordDirty] = useState(false);
     const [passwordError, setPasswordError] = useState('Введите данные');
 
-    const [passwordRepeatDirty, setPasswordRepeatDirty] = useState(true);
+    const [passwordRepeatDirty, setPasswordRepeatDirty] = useState(false);
     const [passwordRepeatError, setPasswordRepeatError] = useState('Введите данные');
 
     const [disabledBtn, setDisabledBtn] = useState('');
@@ -84,8 +84,16 @@ function Registration(props) {
     }
 
     const handleClick = async () => {
+
+       // if (!loginDirty && !passwordDirty && !passwordRepeatDirty){
+       //     setDisabledBtn('')
+       // }else{
+       //     setDisabledBtn('disabled');
+       // }
+
+
         await setLoading(true);
-        if (loginDirty === false && passwordDirty === false && passwordRepeatDirty === false){
+        if (loginValue.trim() !== '' && passwordValue.trim() !== '' && passwordRepeatValue.trim() !== '' && loginDirty === false && passwordDirty === false && passwordRepeatDirty === false){
             await axios.post('http://localhost:4000/createUser', {
                 login: loginValue,
                 password: passwordValue
@@ -126,13 +134,13 @@ function Registration(props) {
 
     },[passwordValue, passwordRepeatValue])
 
-    useEffect( () =>{
-        if (!loginDirty && !passwordDirty && !passwordRepeatDirty){
-            setDisabledBtn('')
-        }else{
-            setDisabledBtn('disabled');
-        }
-    }, [loginDirty, passwordDirty, passwordRepeatDirty]);
+    //useEffect( () =>{
+    //     if (!loginDirty && !passwordDirty && !passwordRepeatDirty){
+    //       setDisabledBtn('')
+    // }else{
+    //   setDisabledBtn('disabled');
+    //    }
+    //}, [loginDirty, passwordDirty, passwordRepeatDirty]);
 
     console.log('LOOG', 'RENDER');
 

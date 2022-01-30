@@ -85,17 +85,20 @@ function Tricks() {
     const token = localStorage.getItem('token');
 
     useEffect( async() =>{
-        await setLoading(true);
+        if(token){
+            await setLoading(true);
 
-        await axios.get('http://localhost:4000/allTricks/', { headers: { Authorization: `${token}` }}).then(res => {
-            let arr = res.data.data;
-            arr.forEach(val => {
-                val.date = val.date.substring(0,10);
-            })
-            setTricks(arr);
-        });
-
-        await setLoading(false);
+            await axios.get('http://localhost:4000/allTricks/', { headers: { Authorization: `${token}` }}).then(res => {
+                let arr = res.data.data;
+                arr.forEach(val => {
+                    val.date = val.date.substring(0,10);
+                })
+                setTricks(arr);
+            });
+    
+            await setLoading(false);
+        }
+       
     }, []);
 
 
@@ -106,9 +109,12 @@ function Tricks() {
             date !== '' &&
             textComplaints.trim() !== ''){
                 setDisabledBtn('');
+                setDateDirty2(false);
+                setDateDirty1(false);
         }else{
             setDisabledBtn('disabled');
         }
+        
 
     }, [namePatient, nameDoctor, date, textComplaints]);
 
@@ -139,6 +145,8 @@ function Tricks() {
         if(fullNowDate >= date || date >= fullMaxDate){
             setDateDirty2(true);
             setDateDirty1(false);
+        }else{
+            setDateDirty2(false)
         }
 
         setLoading(true);
