@@ -33,22 +33,23 @@ function Tricks() {
     const [disabledBtn, setDisabledBtn] = useState('disabled');
     const [loading, setLoading] = useState(false);
 
-
+    const token = localStorage.getItem('token');
     // let request;
-
+    //
     // axios.interceptors.request.use(async (req) => {
     //     req.headers.authorization = await localStorage.getItem('token');
-    //     if (req.url === 'http://localhost:3000/refreshToken') return req;
+    //     if (req.url === 'http://localhost:4000/refreshToken') return req;
     //     request = req;
     //     return req;
     // });
-
+    //
     // axios.interceptors.response.use((res) => res, async (err) => {
+    //     console.log('666', err.response.status, '666');
     //     if (err.response.status === 401) {
     //         const refTokenSend = {
     //             refToken: localStorage.getItem('refToken'),
     //         };
-    //         await axios.post('http://localhost:3000/refreshToken', refTokenSend)
+    //         await axios.post('http://localhost:4000/refreshToken', refTokenSend)
     //             .then((response) => {
     //                 const { token, refToken } = response.data;
     //                 localStorage.setItem('token', token);
@@ -61,6 +62,12 @@ function Tricks() {
     //     }
     //
     //     if (err.response.status === 403) {
+    //         localStorage.clear();
+    //         window.location.href = '/login';
+    //         return 0;
+    //     }
+    //
+    //     if (err.response.status === 500) {
     //         localStorage.clear();
     //         window.location.href = '/login';
     //         return 0;
@@ -81,8 +88,6 @@ function Tricks() {
         fullNowDate = nowYear + '-' + nowMonth + '-' + nowDate;
     }
     let fullMaxDate="2023-12-31"
-
-    const token = localStorage.getItem('token');
 
     useEffect( async() =>{
         if(token){

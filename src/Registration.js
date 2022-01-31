@@ -124,7 +124,10 @@ function Registration(props) {
     }
 
     useEffect(() => {
-        if(passwordRepeatValue !== passwordValue){
+        if(passwordRepeatValue === ''){
+            setPasswordRepeatDirty(true);
+            setPasswordRepeatError('Поле не может быть пустым')
+        }else if(passwordRepeatValue !== passwordValue){
             setPasswordRepeatDirty(true);
             setPasswordRepeatError('Введеные пароли не совпадают')
         } else {
