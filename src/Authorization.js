@@ -106,14 +106,14 @@
          await setLoading(false);
      }
  
-     useEffect( () =>{
-         setDisabledBtn('');
-         if (loginDirty === false && passwordDirty === false){
-             setDisabledBtn('')
-         }else{
-             setDisabledBtn('disabled');
-         }
-     }, [loginDirty, passwordDirty]);
+     // useEffect( () =>{
+     //     setDisabledBtn('');
+     //     if (loginDirty === false && passwordDirty === false){
+     //         setDisabledBtn('')
+     //     }else{
+     //         setDisabledBtn('disabled');
+     //     }
+     // }, [loginDirty, passwordDirty]);
  
      console.log('LOOG', 'RENDER');
  
