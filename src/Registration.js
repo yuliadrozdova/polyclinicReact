@@ -85,35 +85,42 @@ function Registration(props) {
 
     const handleClick = async () => {
 
-       // if (!loginDirty && !passwordDirty && !passwordRepeatDirty){
-       //     setDisabledBtn('')
-       // }else{
-       //     setDisabledBtn('disabled');
-       // }
-
+       if (!loginDirty && !passwordDirty && !passwordRepeatDirty){
+           setDisabledBtn('')
+       }else{
+           setDisabledBtn('disabled');
+       }
 
         await setLoading(true);
-        if (loginValue.trim() !== '' && passwordValue.trim() !== '' && passwordRepeatValue.trim() !== '' && loginDirty === false && passwordDirty === false && passwordRepeatDirty === false){
-            await axios.post('http://localhost:4000/createUser', {
-                login: loginValue,
-                password: passwordValue
-            }).then(res => {
-                if(localStorage.getItem('token')){
-                    localStorage.removeItem('token');
-                }
-                localStorage.setItem('token', res.data.token);
+       try{
+           if (loginValue.trim() !== ''
+               && passwordValue.trim() !== ''
+               && passwordRepeatValue.trim() !== ''
+               && loginDirty === false
+               && passwordDirty === false
+               && passwordRepeatDirty === false){
+               await axios.post('http://localhost:4000/createUser', {
+                   login: loginValue,
+                   password: passwordValue
+               }).then(res => {
+                   if(localStorage.getItem('token')){
+                       localStorage.removeItem('token');
+                   }
+                   localStorage.setItem('token', res.data.token);
 
-                setLoginValue('');
-                setPasswordValue('');
-                setPasswordRepeatValue('');
-                props.action('Приемы', 'visible')
-                navigate("/tricks");
-            }).catch(error => {
-                setShowModalError(true);
-            } );
-        }else {
-            console.log('NO')
-        }
+                   setLoginValue('');
+                   setPasswordValue('');
+                   setPasswordRepeatValue('');
+                   props.action('Приемы', 'visible')
+                   navigate("/tricks");
+               }).catch(error => {
+                   setShowModalError(true);
+               } );
+           }
+       }catch (err){
+           console.error('ERROR REGISTRATION:', err)
+       }
+
         await setLoading(false);
     }
     const authorizationLink = async () => {
@@ -137,15 +144,13 @@ function Registration(props) {
 
     },[passwordValue, passwordRepeatValue])
 
-    //useEffect( () =>{
-    //     if (!loginDirty && !passwordDirty && !passwordRepeatDirty){
-    //       setDisabledBtn('')
-    // }else{
-    //   setDisabledBtn('disabled');
-    //    }
-    //}, [loginDirty, passwordDirty, passwordRepeatDirty]);
-
-    console.log('LOOG', 'RENDER');
+    useEffect( () =>{
+        if (!loginDirty && !passwordDirty && !passwordRepeatDirty){
+          setDisabledBtn('')
+    }else{
+      setDisabledBtn('disabled');
+       }
+    }, [loginDirty, passwordDirty, passwordRepeatDirty]);
 
   return (
 <div className="registration-page">

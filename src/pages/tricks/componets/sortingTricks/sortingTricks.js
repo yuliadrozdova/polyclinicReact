@@ -15,7 +15,7 @@ const SortingTricks = ({tricks, setTricks}) => {
             case 'none':
                 axios.get('http://localhost:4000/allTricks', { headers: { Authorization: `${token}` } }).then(res => {
                     let arr = res.data.data;
-                    arr.forEach(val => {
+                    arr?.forEach(val => {
                         val.date = val.date.substring(0,10);
                     })
                     return  setTricks(arr);
@@ -31,7 +31,7 @@ const SortingTricks = ({tricks, setTricks}) => {
                     case 'desc':
                         copy.sort((a,b) => b.namePatient.localeCompare(a.namePatient));
                         return setTricks(copy);
-                    default: console.log('err');
+                    default: console.warn('error sorting');
                 }
                 break;
 
@@ -44,7 +44,7 @@ const SortingTricks = ({tricks, setTricks}) => {
                     case 'desc':
                         copy.sort((a,b) => b.nameDoctor.localeCompare(a.nameDoctor));
                         return setTricks(copy);
-                    default: console.log('err');
+                    default: console.warn('error sorting');
                 }
                 break;
 
@@ -57,7 +57,7 @@ const SortingTricks = ({tricks, setTricks}) => {
                     case 'desc':
                         copy.sort((a,b) => b.date.localeCompare(a.date));
                         return setTricks(copy);
-                    default: console.log('err');
+                    default: console.warn('error sorting');
                 }
                 break;
 

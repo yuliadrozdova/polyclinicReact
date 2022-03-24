@@ -19,7 +19,7 @@ const FilterTricks = ({setTricks}) => {
 
     axios.get('http://localhost:4000/allTricks', { headers: { Authorization: `${token}` } }).then(res => {
         newArray = res.data.data;
-        newArray.forEach(val => {
+        newArray?.forEach(val => {
             val.date = val.date.substring(0,10);
         })
     });

@@ -34,48 +34,6 @@ function Tricks() {
     const [loading, setLoading] = useState(false);
 
     const token = localStorage.getItem('token');
-    // let request;
-    //
-    // axios.interceptors.request.use(async (req) => {
-    //     req.headers.authorization = await localStorage.getItem('token');
-    //     if (req.url === 'http://localhost:4000/refreshToken') return req;
-    //     request = req;
-    //     return req;
-    // });
-    //
-    // axios.interceptors.response.use((res) => res, async (err) => {
-    //     console.log('666', err.response.status, '666');
-    //     if (err.response.status === 401) {
-    //         const refTokenSend = {
-    //             refToken: localStorage.getItem('refToken'),
-    //         };
-    //         await axios.post('http://localhost:4000/refreshToken', refTokenSend)
-    //             .then((response) => {
-    //                 const { token, refToken } = response.data;
-    //                 localStorage.setItem('token', token);
-    //                 localStorage.setItem('refToken', refToken);
-    //                 return 0;
-    //             });
-    //
-    //         request.authorization = localStorage.getItem('token');
-    //         return axios.request(request);
-    //     }
-    //
-    //     if (err.response.status === 403) {
-    //         localStorage.clear();
-    //         window.location.href = '/login';
-    //         return 0;
-    //     }
-    //
-    //     if (err.response.status === 500) {
-    //         localStorage.clear();
-    //         window.location.href = '/login';
-    //         return 0;
-    //     }
-    //     return 0;
-    // });
-
-
 
 
     let nowYear = new Date().getFullYear();
@@ -89,21 +47,23 @@ function Tricks() {
     }
     let fullMaxDate="2023-12-31"
 
-    useEffect( async() =>{
-        if(token){
-            await setLoading(true);
+    useEffect( () =>{
+        async function fetchData() {
+            if (token) {
+                await setLoading(true);
 
-            await axios.get('http://localhost:4000/allTricks/', { headers: { Authorization: `${token}` }}).then(res => {
-                let arr = res.data.data;
-                arr.forEach(val => {
-                    val.date = val.date.substring(0,10);
-                })
-                setTricks(arr);
-            });
-    
-            await setLoading(false);
+                await axios.get('http://localhost:4000/allTricks/', {headers: {Authorization: `${token}`}}).then(res => {
+                    let arr = res.data.data;
+                    arr?.forEach(val => {
+                        val.date = val.date.substring(0, 10);
+                    })
+                    setTricks(arr);
+                }).catch(err => console.error(err));
+
+                await setLoading(false);
+            }
         }
-       
+        fetchData();
     }, []);
 
 
@@ -119,13 +79,12 @@ function Tricks() {
         }else{
             setDisabledBtn('disabled');
         }
-        
+
 
     }, [namePatient, nameDoctor, date, textComplaints]);
 
 
     const createTrickAxios = async (namePatient, nameDoctor, date, textComplaints) => {
-        console.log('*', namePatient, 111111);
         await axios.post('http://localhost:4000/createTrick', {
             namePatient,
             nameDoctor,
@@ -137,13 +96,19 @@ function Tricks() {
             setDate('');
             setTextComplaints('');
 
-            const copy = tricks.map(value => value); //изменение копии стейта
-            let arr = res.data.data;
-            arr.date = arr.date.substring(0,10);
+            try{
+                if(res?.data?.data){
+                    const copy = tricks?.map(value => value); //изменение копии стейта
+                    let arr = res.data.data;
+                    arr.date = arr.date.substring(0,10);
 
-            copy.push(arr);
-            setTricks(copy);
-        });
+                    copy.push(arr);
+                    setTricks(copy);
+                }
+            }catch (err){
+                console.error('ERROR CREATE TRICK:', err)
+            }
+        }).catch(err => console.error(err));
     }
     const createNewTrick = async () => {
 
@@ -173,22 +138,17 @@ function Tricks() {
         const copy = tricks.map(value => value); //изменение копии стейта
         await copy.forEach(value => {
             if (value._id === id){
-                console.log('0000')
                 value.namePatient = namePatient;
-                console.log('value.namePatient ', value.namePatient)
                 value.nameDoctor = nameDoctor;
                 value.date = date;
                 value.textComplaints = textComplaints;
-                console.log('value', value)
             }
         });
         setTricks(copy);
-
-        console.log('----', tricks)
     }
 
     const deleteTrick = (item) => {
-        const copy = tricks.map(value => value); //изменение копии стейта
+        const copy = tricks.map(value => value);
         copy.forEach((val, ind) => {
             if (item._id === val._id){
                 copy.splice(ind, 1);
@@ -198,7 +158,6 @@ function Tricks() {
     }
 
     const openModalUpdate = async (index) => {
-        // console.log('111111', tricks[index])
         setItemModal(tricks[index]);
         setShowModal(true);
     }
@@ -240,7 +199,6 @@ function Tricks() {
                         {/*{(namePatientDirty) && <div style={{color: 'red'}}>Введите имя пациента</div>}*/}
                     </div>
 
-                    {/*есть такая штука как <datalist>, может она подойдет лучше*/}
                     <div className="doctor-name">
                         <p>Врач:</p>
                         <select name="doctor-list"
@@ -295,7 +253,7 @@ function Tricks() {
                         <div className="text-trick-btn"></div>
                     </div>
 
-                    {tricks.map((trick, index) =>
+                    {tricks?.map((trick, index) =>
                         <div className="trick-wrap" key={`trick-${index}`}>
                             <div className="text-trick-patient">{trick.namePatient}</div>
                             <div className="text-trick-doctor">{trick.nameDoctor}</div>
