@@ -9,7 +9,7 @@ body {
     height: 70px;
     margin: 22px 75px 24px 20px;
 }
-.authorization-page main {
+main {
     max-width: 1000px;
     margin: 0 auto;
     display: flex;
@@ -61,7 +61,7 @@ p {
     font-size: 18px;
     margin: 8px 0;
 }
-.authorization-page button {
+button {
     align-self: flex-end;
     font-size: 18px;
     padding: 10px;

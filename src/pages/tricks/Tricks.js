@@ -8,34 +8,22 @@ import AddEditTrickModal from "./componets/addEditTrickModal/addEditTrickModal";
 import AddDeleteTrickModal from "./componets/addDeleteTrickModal/addDeleteTrickModal";
 import SortingTricks from "./componets/sortingTricks/sortingTricks";
 import FilterTricks from "./componets/filterTricks/filterTricks";
-
+// let request;
 function Tricks() {
-    // let navigate = useNavigate();
-
     const [tricks, setTricks] = useState([]);
     const [namePatient, setNamePatient] = useState('');
     const [nameDoctor, setNameDoctor] = useState('');
     const [date, setDate] = useState('');
     const [textComplaints, setTextComplaints] = useState('');
-
-    //const [namePatientDirty, setNamePatientDirty] = useState(false);
-    //const [nameDoctorDirty, setNameDoctorDirty] = useState(false);
     const [dateDirty1, setDateDirty1] = useState(false);
     const [dateDirty2, setDateDirty2] = useState(false);
-    //const [textComplaintsDirty, setTextComplaintsDirty] = useState(false);
-    //const [namePatientError, setNamePatientError] = useState('');
-
     const [showModal, setShowModal] = useState(false);
     const [itemModal, setItemModal] = useState('');
     const [showModalDelete, setShowModalDelete] = useState(false);
     const [indexModal, setIndexModal] = useState('');
-
     const [disabledBtn, setDisabledBtn] = useState('disabled');
     const [loading, setLoading] = useState(false);
-
     const token = localStorage.getItem('token');
-
-
     let nowYear = new Date().getFullYear();
     let nowMonth = new Date().getMonth() + 1;
     let nowDate = new Date().getDate();
@@ -47,12 +35,53 @@ function Tricks() {
     }
     let fullMaxDate="2023-12-31"
 
+    // axios.interceptors.request.use(async (req) => {
+    //     function fetchData() { req.headers.authorization = token }
+    //     await fetchData();
+    //     if (req.url === 'http://localhost:4000/refreshToken') return req;
+    //     request = req;
+    //     return req;
+    // });
+    //
+    // axios.interceptors.response.use((res) => {
+    //     return res
+    // }, async (err) => {
+    //     if(err.response){
+    //         if (err?.response?.status === 401) {
+    //             const refTokenSend = localStorage.getItem('refToken');
+    //             await axios.post('http://localhost:4000/refreshToken', {},{headers: {Authorization: `${refTokenSend}`}})
+    //                 .then((response) => {
+    //                     const { token, refToken } = response.data;
+    //                     localStorage.setItem('token', token);
+    //                     localStorage.setItem('refToken', refToken);
+    //                     return 0;
+    //                 });
+    //
+    //             request.authorization = localStorage.getItem('token');
+    //             return axios.request(request);
+    //         }
+    //
+    //         if (err.response.status === 403) {
+    //             localStorage.clear();
+    //             window.location.href = '/';
+    //             return 0;
+    //         }
+    //         if (err.response.status === 500) {
+    //             console.log('================')
+    //             localStorage.clear();
+    //             window.location.href = '/';
+    //             return 0;
+    //         }
+    //     }
+    //     return 0;
+    //
+    // });
+
     useEffect( () =>{
         async function fetchData() {
             if (token) {
                 await setLoading(true);
-
-                await axios.get('http://localhost:4000/allTricks/', {headers: {Authorization: `${token}`}}).then(res => {
+                await axios.get('http://localhost:4000/allTricks/', {headers: {'Authorization': `${token}`}}).then(res => {
                     let arr = res.data.data;
                     arr?.forEach(val => {
                         val.date = val.date.substring(0, 10);
@@ -66,8 +95,7 @@ function Tricks() {
         fetchData();
     }, []);
 
-
-    useEffect(   () =>{        //disabled button with create trick
+    useEffect(() =>{        //disabled button with create trick
         if (namePatient.trim() !== '' &&
             nameDoctor !== '-' &&
             nameDoctor !=='' &&
@@ -79,10 +107,7 @@ function Tricks() {
         }else{
             setDisabledBtn('disabled');
         }
-
-
     }, [namePatient, nameDoctor, date, textComplaints]);
-
 
     const createTrickAxios = async (namePatient, nameDoctor, date, textComplaints) => {
         await axios.post('http://localhost:4000/createTrick', {
@@ -101,26 +126,25 @@ function Tricks() {
                     const copy = tricks?.map(value => value); //изменение копии стейта
                     let arr = res.data.data;
                     arr.date = arr.date.substring(0,10);
-
                     copy.push(arr);
                     setTricks(copy);
                 }
+                setDateDirty1(false);
+                setDateDirty2(false);
             }catch (err){
                 console.error('ERROR CREATE TRICK:', err)
             }
         }).catch(err => console.error(err));
     }
-    const createNewTrick = async () => {
 
-        if(fullNowDate >= date || date >= fullMaxDate){
+    const createNewTrick = async () => {
+        if(fullNowDate > date || date >= fullMaxDate){
             setDateDirty2(true);
             setDateDirty1(false);
         }else{
             setDateDirty2(false)
         }
-
         setLoading(true);
-
         if (namePatient.trim() !== '' &&
             nameDoctor !== '-' &&
             nameDoctor !=='' &&
@@ -131,11 +155,10 @@ function Tricks() {
             createTrickAxios(namePatient.trim(), nameDoctor, date, textComplaints.trim());
         }
         await setLoading(false);
-
     }
 
     const editTrick = async (namePatient, nameDoctor, date, textComplaints, id) => {
-        const copy = tricks.map(value => value); //изменение копии стейта
+        const copy = tricks.map(value => value);
         await copy.forEach(value => {
             if (value._id === id){
                 value.namePatient = namePatient;
@@ -196,7 +219,6 @@ function Tricks() {
                                value={namePatient}
                                onChange={(e) => setNamePatient(e.target.value)}
                                required/>
-                        {/*{(namePatientDirty) && <div style={{color: 'red'}}>Введите имя пациента</div>}*/}
                     </div>
 
                     <div className="doctor-name">
@@ -210,7 +232,6 @@ function Tricks() {
                             <option value="Иванов Алексей Николаевич">Иванов Алексей Николаевич</option>
                             <option value="Остапова Вера Александровна">Остапова Вера Александровна</option>
                         </select>
-                        {/*{(nameDoctorDirty) && <div style={{color: 'red'}}>Введите имя врача</div>}*/}
                     </div>
 
                     <div className="date">
@@ -230,7 +251,6 @@ function Tricks() {
                                value={textComplaints}
                                onChange={(e) => setTextComplaints(e.target.value)}
                                required/>
-                        {/*{(textComplaintsDirty) && <div style={{color: 'red'}}>Введите жалобы пациента</div>}*/}
                     </div>
 
                     <div className="recording-btn">
@@ -239,7 +259,6 @@ function Tricks() {
                 </div>
 
                 <div className="tricks-list">
-
                     <SortingTricks tricks={tricks}
                                    setTricks={sortTricks}/>
                     <FilterTricks setTricks={filterTricks}/>
@@ -259,7 +278,6 @@ function Tricks() {
                             <div className="text-trick-doctor">{trick.nameDoctor}</div>
                             <div className="text-trick-date">{trick.date}</div>
                             <div className="text-trick-complaints">{trick.textComplaints}</div>
-
                             <div className="text-trick-btn">
                                 <img className="text-trick-btn-delete" src={close} alt="button open modal delete"
                                      onClick={() => openModalDelete(index)}/>
