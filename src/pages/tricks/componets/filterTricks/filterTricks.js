@@ -5,7 +5,6 @@ import open_filter from "../../../../images/open_filter.svg";
 import close from "../../../../images/delete.svg";
 
 const FilterTricks = ({setTricks}) => {
-
     const [startFilterTricks, setStartFilter] = useState('');
     const [endFilterTricks, setEndFilter] = useState('');
     const [classFilter, setClassFilter] = useState('hidden');
@@ -13,13 +12,14 @@ const FilterTricks = ({setTricks}) => {
     const [filterError1, setFilterError1] = useState(false);
     const [filterError2, setFilterError2] = useState(false);
     const [loading, setLoading] = useState(false);
-
     let newArray = [];
     const token = localStorage.getItem('token');
-
+    /**
+     * filter tricks
+     */
     axios.get('http://localhost:4000/allTricks', { headers: { Authorization: `${token}` } }).then(res => {
-        newArray = res.data.data;
-        newArray.forEach(val => {
+        newArray = res?.data?.data;
+        newArray?.forEach(val => {
             val.date = val.date.substring(0,10);
         })
     });
@@ -32,7 +32,6 @@ const FilterTricks = ({setTricks}) => {
     const closeFilter = async () => {
         setClassFilter('hidden');
         setClassFilterMain('visible');
-
         await axios.get('http://localhost:4000/allTricks', { headers: { Authorization: `${token}` } }).then(res => {
             let arr = res.data.data;
             arr.forEach(val => {
@@ -59,7 +58,6 @@ const FilterTricks = ({setTricks}) => {
                 }
             })
             await setTricks(copy);
-
         } else if (startDate !== '' && endDate === ''){
             await newArray.forEach(value => {
                 if (value.date >= startDate ){
@@ -67,7 +65,6 @@ const FilterTricks = ({setTricks}) => {
                 }
             })
             await setTricks(copy);
-
         } else if (startDate !== '' && endDate !== ''){
             await newArray.forEach(value => {
                 if (value.date >= startDate && value.date <= endDate){
@@ -80,7 +77,6 @@ const FilterTricks = ({setTricks}) => {
     }
 
     return (
-
         <div className="filter-main">
             {loading && <div className="backgroundLoading">
                 <div className="loading"></div>
@@ -126,7 +122,6 @@ const FilterTricks = ({setTricks}) => {
                          onClick={closeFilter}/>
                 </div>
             </div>
-
         </div>
     );
 };

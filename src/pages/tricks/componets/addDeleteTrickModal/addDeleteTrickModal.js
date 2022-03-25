@@ -5,7 +5,6 @@ import axios from "axios";
 
 const AddDeleteTrickModal = ({item, isOpen, onClose, newTricks}) => {
     const [loading, setLoading] = useState(false);
-   // localStorage.removeItem('token');
     const token = localStorage.getItem('token');
 
     const deleteTrick = async (item) => {
@@ -22,7 +21,7 @@ const AddDeleteTrickModal = ({item, isOpen, onClose, newTricks}) => {
         <Modal className="modal-update" isOpen={isOpen} contentLabel="Example Modal" onRequestClose={onClose}
                shouldCloseOnOverlayClick={true}>
             {loading && <div className="backgroundLoading">
-                <div className="loading"></div>
+                <div className="loading"/>
             </div>}
             <div className="modal-header">Удалить прием</div>
             <div className="modal-delete-text">Вы действительно хотите удалить прием?</div>

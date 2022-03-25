@@ -8,12 +8,10 @@ const AddEditTrickModal = ({item, isOpen, onClose, newItem}) => {const [disabled
     const [loading, setLoading] = useState(false);
 
     const token = localStorage.getItem('token');
-// console.log('10101', item)
     useEffect(() => {                                                  //проверяет обновление item
         setValues({ ...item });
     },[item])
 
-    // console.log('20202', values.namePatient)
     const updateInput = (e) => {
         const {value, id} = e.target;
         const field = id.replace('modal-', '')

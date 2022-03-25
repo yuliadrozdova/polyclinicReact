@@ -4,10 +4,8 @@ import './styles/App.css';
 import {
     BrowserRouter as Router,
     Routes,
-    Route,
-    Link
+    Route
 } from "react-router-dom";
-import Registration from './Registration';
 import Authorization from "./Authorization";
 import Tricks from "./pages/tricks/Tricks";
 
@@ -42,11 +40,12 @@ export default function App() {
     const exitAccountClick = async () => {
         if(localStorage.getItem('token')){
             localStorage.removeItem('token');
+            localStorage.removeItem('refToken');
         }
         window.location.assign('http://localhost:3000/');
     }
 
-    const testrender = (header, btn) => {
+    const render = (header, btn) => {
         setHeaderPage(header);
         setClassBtnExit(btn);
     }
@@ -71,13 +70,13 @@ export default function App() {
                 <Routes>
                     <Route exact path="/" element={
                         <div className="App">
-                            <Authorization action={testrender}/>
+                            <Authorization action={render}/>
                         </div>}/>
 
                     <Route exact path="/registration" element={
-                    <div className="App">
-                        <Registration action={testrender} />
-                    </div>}/>
+                        <div className="App">
+                            <Authorization action={render} />
+                        </div>}/>
 
                     <Route exact path="/tricks" element={
                         <div className="App">
